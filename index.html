@@ -1,0 +1,1764 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#241237">
+  <meta name="description" content="Jornada de Formación y Superación Docente UVP: consulta la agenda semanal, elige cursos, inscríbete y descarga tu constancia.">
+  <title>Jornada de Formación y Superación Docente | UVP</title>
+  <link rel="icon" href="assets/img/logo-uvp.png">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1f1828;
+      --muted: #6b6474;
+      --paper: #fbf9fc;
+      --surface: #ffffff;
+      --line: #ebe4ee;
+      --plum: #4a176d;
+      --plum-deep: #241237;
+      --purple: #7425a5;
+      --magenta: #c41d65;
+      --orange: #f27b35;
+      --gold: #f6c646;
+      --mint: #e4f5ec;
+      --ok: #147247;
+      --danger: #a52046;
+      --brand-grad: linear-gradient(110deg, #f6c646 0%, #f27b35 38%, #c41d65 72%, #7425a5 100%);
+      /* Sombras en capas: contacto + ambiente + color de marca */
+      --shadow-sm: 0 1px 2px rgba(42,15,64,.06), 0 4px 14px -4px rgba(42,15,64,.10);
+      --shadow: 0 2px 4px rgba(42,15,64,.05), 0 14px 30px -10px rgba(42,15,64,.20), 0 34px 60px -30px rgba(116,37,165,.35);
+      --shadow-xl: 0 3px 6px rgba(42,15,64,.06), 0 24px 50px -14px rgba(42,15,64,.32), 0 60px 90px -40px rgba(196,29,101,.38);
+      --edge: inset 0 1px 0 rgba(255,255,255,.85);
+      --radius: 22px;
+      --ease: cubic-bezier(.32,.72,0,1);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    @property --angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--paper); color: var(--ink); line-height: 1.5; overflow-x: hidden; }
+    button, input, select, textarea { font: inherit; }
+    a { color: inherit; }
+    img { max-width: 100%; display: block; }
+    .wrap { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .skip-link { position: fixed; z-index: 80; top: 8px; left: 8px; padding: 12px 16px; border-radius: 10px; background: #fff; transform: translateY(-160%); }
+    .skip-link:focus { transform: none; }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+    [hidden] { display: none !important; }
+
+    /* ---------- Progreso de lectura y encabezado de cristal ---------- */
+    .progress { position: fixed; z-index: 40; top: 0; left: 0; height: 3px; width: 100%; transform-origin: 0 50%; transform: scaleX(var(--p, 0)); background: var(--brand-grad); box-shadow: 0 0 12px rgba(242,123,53,.6); }
+    .topbar { position: sticky; top: 0; z-index: 30; background: rgba(255,255,255,.72); border-bottom: 1px solid rgba(235,228,238,.7); backdrop-filter: saturate(1.6) blur(16px); -webkit-backdrop-filter: saturate(1.6) blur(16px); transition: box-shadow .3s, background .3s; }
+    .topbar.is-scrolled { background: rgba(255,255,255,.9); box-shadow: 0 10px 30px -18px rgba(42,15,64,.45); }
+    .nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 20px; transition: min-height .3s var(--ease); }
+    .topbar.is-scrolled .nav { min-height: 60px; }
+    .brand img { height: 40px; width: auto; transition: height .3s var(--ease); }
+    .topbar.is-scrolled .brand img { height: 34px; }
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-links a { position: relative; color: #3b3346; font-size: 14px; font-weight: 600; text-decoration: none; padding: 9px 12px; border-radius: 999px; transition: background .2s, color .2s; }
+    .nav-links a:not(.nav-cta):hover, .nav-links a.is-current { background: rgba(116,37,165,.08); color: var(--plum); }
+    .nav-cta { margin-left: 8px; padding: 11px 18px !important; background: var(--brand-grad); background-size: 160% 100%; color: #fff !important; box-shadow: 0 10px 22px -8px rgba(196,29,101,.6), var(--edge); transition: background-position .5s var(--ease), transform .2s; }
+    .nav-cta:hover { background-position: 100% 0; transform: translateY(-1px); }
+    .menu-toggle { display: none; border: 1px solid #d9cfe0; border-radius: 12px; padding: 9px 14px; background: #fff; color: var(--plum); font-weight: 700; cursor: pointer; }
+
+    /* ---------- Botones con destello ---------- */
+    .button { position: relative; isolation: isolate; overflow: hidden; display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 9px; border: 0; border-radius: 999px; padding: 12px 22px; font-weight: 700; text-decoration: none; cursor: pointer; transition: transform .25s var(--ease), box-shadow .25s, background .2s; }
+    .button::after { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.55) 48%, transparent 66%); transform: translateX(-120%); transition: transform .8s var(--ease); }
+    .button:hover:not(:disabled)::after { transform: translateX(120%); }
+    .button:hover:not(:disabled) { transform: translateY(-2px); }
+    .button:active:not(:disabled) { transform: scale(.975); }
+    .button:disabled { opacity: .55; cursor: not-allowed; }
+    .button-primary { background: linear-gradient(105deg, #f6c646, #f28a37); color: #281337; box-shadow: 0 12px 26px -10px rgba(242,123,53,.85), var(--edge); }
+    .button-plum { background: linear-gradient(120deg, #5b1d7e, #4a176d); color: #fff; box-shadow: 0 12px 24px -10px rgba(74,23,109,.8), inset 0 1px 0 rgba(255,255,255,.2); }
+    .button-ghost { border: 1px solid rgba(255,255,255,.4); background: rgba(255,255,255,.08); color: #fff; backdrop-filter: blur(6px); }
+    .button-outline { border: 1px solid #d4c5dc; background: #fff; color: var(--plum); box-shadow: var(--shadow-sm); }
+    .button-light { border: 1px solid #e3d8ea; background: #fff; color: var(--plum-deep); }
+
+    /* ---------- Hero con aurora y edificio flotante ---------- */
+    .hero { position: relative; overflow: hidden; isolation: isolate; padding: clamp(56px, 8vw, 100px) 0 clamp(70px, 8vw, 110px); color: #fff; background: linear-gradient(125deg, #1c0d2c 0%, #3a1552 48%, #5d1f78 100%); }
+    .aurora { position: absolute; inset: -20%; z-index: -2; filter: blur(70px) saturate(1.2); opacity: .85; pointer-events: none; }
+    .aurora span { position: absolute; width: 46vmax; height: 46vmax; border-radius: 50%; mix-blend-mode: screen; animation: drift 22s ease-in-out infinite alternate; }
+    .aurora span:nth-child(1) { left: 55%; top: -10%; background: radial-gradient(circle, rgba(246,198,70,.55), transparent 60%); }
+    .aurora span:nth-child(2) { left: -10%; top: 40%; background: radial-gradient(circle, rgba(196,29,101,.65), transparent 60%); animation-duration: 26s; animation-delay: -6s; }
+    .aurora span:nth-child(3) { left: 30%; top: 50%; background: radial-gradient(circle, rgba(116,37,165,.7), transparent 60%); animation-duration: 30s; animation-delay: -12s; }
+    .aurora span:nth-child(4) { left: 75%; top: 45%; background: radial-gradient(circle, rgba(242,123,53,.45), transparent 60%); animation-duration: 24s; animation-delay: -3s; }
+    @keyframes drift { 0% { transform: translate(0,0) scale(1); } 50% { transform: translate(6%, -8%) scale(1.12); } 100% { transform: translate(-8%, 6%) scale(.94); } }
+    .hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(ellipse at 70% 40%, #000 10%, transparent 70%); -webkit-mask-image: radial-gradient(ellipse at 70% 40%, #000 10%, transparent 70%); }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr); gap: 40px; align-items: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; color: #f8d468; font-size: 12px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+    .eyebrow::before { width: 26px; height: 2px; content: ""; background: currentColor; border-radius: 2px; }
+    h1 { margin: 20px 0 18px; font-size: clamp(38px, 5.6vw, 68px); line-height: 1.02; letter-spacing: -.035em; font-weight: 800; text-shadow: 0 2px 30px rgba(0,0,0,.25); }
+    h1 .shine { background: linear-gradient(100deg, #fff 0%, #fff 35%, #ffe08a 50%, #fff 65%, #fff 100%); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: textShine 6s ease-in-out infinite; }
+    @keyframes textShine { 0%, 100% { background-position: 100% 0; } 50% { background-position: 0 0; } }
+    .hero-objective { max-width: 640px; margin: 0; color: #eee3f3; font-size: clamp(16px, 1.8vw, 18.5px); line-height: 1.7; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 26px 0 0; padding: 0; list-style: none; color: #dccbe6; font-size: 14px; }
+    .hero-meta li { display: flex; align-items: center; gap: 8px; }
+    .hero-meta svg { width: 18px; height: 18px; flex: 0 0 auto; color: #f8d468; }
+    .countdown { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+    .countdown .unit { min-width: 74px; padding: 12px 10px 10px; border-radius: 16px; text-align: center; background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.05)); border: 1px solid rgba(255,255,255,.18); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 14px 30px -16px rgba(0,0,0,.6); backdrop-filter: blur(8px); }
+    .countdown strong { display: block; font-size: 28px; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -.03em; }
+    .countdown small { display: block; margin-top: 6px; color: #e8d7f0; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    .countdown-label { width: 100%; margin: 0 0 2px; color: #f8d468; font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+
+    .stage { position: relative; perspective: 1100px; }
+    .building { position: relative; transform-style: preserve-3d; transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .5s var(--ease); animation: float 7s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -12px; } }
+    .building img { width: 100%; height: auto; filter: drop-shadow(0 30px 40px rgba(10,0,20,.55)) drop-shadow(0 0 40px rgba(196,29,101,.35)) saturate(1.1); }
+    .building .reflection { position: absolute; left: 0; right: 0; top: 100%; transform: scaleY(-1) translateY(-6px); opacity: .32; filter: blur(1.5px) saturate(1.2); mask-image: linear-gradient(to top, rgba(0,0,0,.7), transparent 45%); -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,.7), transparent 45%); pointer-events: none; }
+    .stage::after { content: ""; position: absolute; left: 8%; right: 8%; bottom: -10px; height: 40px; border-radius: 50%; background: radial-gradient(ellipse, rgba(246,198,70,.45), transparent 70%); filter: blur(10px); animation: floorGlow 7s ease-in-out infinite; }
+    @keyframes floorGlow { 0%, 100% { opacity: .9; transform: scaleX(1); } 50% { opacity: .55; transform: scaleX(.86); } }
+    .stage .badge { position: absolute; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 16px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.25); backdrop-filter: blur(10px); box-shadow: 0 18px 36px -18px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.3); font-size: 13px; font-weight: 700; animation: float 6s ease-in-out infinite; }
+    .stage .badge b { display: block; font-size: 20px; line-height: 1; color: #ffe08a; font-variant-numeric: tabular-nums; }
+    .stage .badge.b1 { left: -4%; top: 12%; animation-delay: -2s; }
+    .stage .badge.b2 { right: -2%; bottom: 18%; animation-delay: -4s; }
+
+    /* Cinta de temas en movimiento */
+    .ticker { position: relative; overflow: hidden; padding: 14px 0; background: #fff; border-bottom: 1px solid var(--line); box-shadow: 0 10px 30px -24px rgba(42,15,64,.6); }
+    .ticker::before, .ticker::after { content: ""; position: absolute; z-index: 1; top: 0; bottom: 0; width: 90px; pointer-events: none; }
+    .ticker::before { left: 0; background: linear-gradient(90deg, #fff, transparent); }
+    .ticker::after { right: 0; background: linear-gradient(-90deg, #fff, transparent); }
+    .ticker-track { display: flex; width: max-content; gap: 34px; animation: marquee 48s linear infinite; }
+    .ticker:hover .ticker-track { animation-play-state: paused; }
+    .ticker-track span { display: inline-flex; align-items: center; gap: 34px; white-space: nowrap; color: #4a3e52; font-size: 13.5px; font-weight: 700; }
+    .ticker-track span::after { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--brand-grad); }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    /* ---------- Encabezados de sección ---------- */
+    .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 26px; }
+    .kicker { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; background: linear-gradient(90deg, var(--magenta), var(--orange)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    h2.title { margin: 8px 0 8px; font-size: clamp(28px, 3.6vw, 42px); line-height: 1.08; letter-spacing: -.032em; color: var(--ink); }
+    .lead { max-width: 680px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.7; }
+    section.block { position: relative; padding: 88px 0; }
+    .bg-soft { background: radial-gradient(ellipse at 10% 0%, rgba(246,198,70,.10), transparent 40%), radial-gradient(ellipse at 100% 100%, rgba(116,37,165,.08), transparent 45%), #f5f0f8; }
+
+    /* ---------- Superficies con brillo que sigue al cursor ---------- */
+    [data-tilt] { transform-style: preserve-3d; will-change: transform; }
+    .glare { position: relative; isolation: isolate; }
+    .glare::before { content: ""; position: absolute; inset: 0; z-index: 2; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .35s; background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(255,255,255,.55), rgba(255,255,255,.08) 35%, transparent 60%); mix-blend-mode: soft-light; }
+    .glare:hover::before { opacity: 1; }
+    .glare.on-light::before { mix-blend-mode: normal; background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), rgba(116,37,165,.08), transparent 60%); }
+
+    /* ---------- Carrusel ---------- */
+    .showcase { padding: 70px 0 46px; }
+    .carousel-controls { display: flex; gap: 10px; flex: 0 0 auto; }
+    .icon-btn { width: 46px; height: 46px; display: grid; place-items: center; border: 1px solid #e0d5e7; border-radius: 50%; background: #fff; color: var(--plum); cursor: pointer; box-shadow: var(--shadow-sm), var(--edge); transition: background .2s, color .2s, transform .2s var(--ease); }
+    .icon-btn:hover:not(:disabled) { background: var(--plum); color: #fff; transform: translateY(-2px); }
+    .icon-btn:disabled { opacity: .4; cursor: default; }
+    .icon-btn svg { width: 20px; height: 20px; }
+    .carousel { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 10px 4px 34px; scrollbar-width: none; cursor: grab; }
+    .carousel::-webkit-scrollbar { display: none; }
+    .carousel.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+    .carousel.is-dragging * { pointer-events: none; }
+    .slide { flex: 0 0 min(350px, 84%); scroll-snap-align: start; display: flex; flex-direction: column; position: relative; overflow: hidden; border-radius: 26px; padding: 26px; color: #fff; min-height: 290px; background: linear-gradient(150deg, #3a1656, #6d2385 58%, #c41d65); box-shadow: var(--shadow-xl), inset 0 1px 0 rgba(255,255,255,.25); transition: transform .5s var(--ease), box-shadow .5s; }
+    .slide:nth-child(3n+2) { background: linear-gradient(150deg, #2a1b4a, #7425a5 55%, #f27b35); }
+    .slide:nth-child(3n+3) { background: linear-gradient(150deg, #3f1447, #c41d65 60%, #f6c646); }
+    .slide::after { content: ""; position: absolute; inset: 0 0 55% 0; background: linear-gradient(180deg, rgba(255,255,255,.18), transparent); pointer-events: none; }
+    .slide .orb { position: absolute; right: -50px; top: -50px; width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.35), rgba(255,255,255,.04) 60%); transition: transform .8s var(--ease); }
+    .slide:hover .orb { transform: scale(1.25) translate(-10px, 10px); }
+    .slide-tag { position: relative; z-index: 1; align-self: flex-start; border-radius: 999px; padding: 6px 12px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.25); font-size: 11px; font-weight: 700; letter-spacing: .04em; backdrop-filter: blur(4px); }
+    .slide h3 { position: relative; z-index: 1; margin: 18px 0 10px; font-size: 20px; line-height: 1.28; letter-spacing: -.015em; }
+    .slide p { position: relative; z-index: 1; margin: 0; color: #f6ecfa; font-size: 13.5px; line-height: 1.6; }
+    .slide-seats { position: relative; z-index: 1; margin-top: 14px; }
+    .slide-seats .bar { height: 6px; border-radius: 6px; background: rgba(255,255,255,.2); overflow: hidden; }
+    .slide-seats .bar i { display: block; height: 100%; width: var(--w, 0%); border-radius: inherit; background: linear-gradient(90deg, #fff, #ffe08a); box-shadow: 0 0 12px rgba(255,224,138,.8); transition: width 1s var(--ease); }
+    .slide-seats small { display: block; margin-top: 6px; font-size: 12px; font-weight: 700; color: #fff; opacity: .9; }
+    .slide-foot { position: relative; z-index: 1; margin-top: auto; padding-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: 700; }
+    .slide-foot button { border: 1px solid rgba(255,255,255,.3); background: rgba(255,255,255,.16); color: #fff; border-radius: 999px; padding: 9px 14px; font-weight: 700; cursor: pointer; transition: background .2s, color .2s; }
+    .slide-foot button:hover { background: #fff; color: var(--plum); }
+    .dots { display: flex; justify-content: center; gap: 8px; }
+    .dots button { width: 9px; height: 9px; padding: 0; border: 0; border-radius: 9px; background: #d9cde2; cursor: pointer; transition: width .4s var(--ease), background .3s; }
+    .dots button[aria-current="true"] { width: 30px; background: var(--brand-grad); }
+
+    /* ---------- Indicadores ---------- */
+    .counters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-bottom: 46px; }
+    .counter { position: relative; display: flex; align-items: center; gap: 20px; padding: 24px 26px; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(180deg, #fff, #fdfbfe); box-shadow: var(--shadow), var(--edge); overflow: hidden; }
+    .counter::after { content: ""; position: absolute; right: -40px; bottom: -60px; width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle, rgba(116,37,165,.10), transparent 70%); }
+    .ring { --v: 0; position: relative; width: 64px; height: 64px; flex: 0 0 auto; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(#2a9d68 calc(var(--v) * 1%), #e4f5ec 0); transition: --v 1s; }
+    .ring::before { content: ""; position: absolute; inset: 7px; border-radius: 50%; background: #fff; box-shadow: inset 0 2px 6px rgba(42,15,64,.08); }
+    .ring svg { position: relative; width: 26px; height: 26px; color: var(--ok); }
+    .counter.is-orange .ring { background: conic-gradient(var(--orange) calc(var(--v) * 1%), #ffeedf 0); }
+    .counter.is-orange .ring svg { color: #c8561c; }
+    .counter strong { display: block; font-size: 38px; line-height: 1; letter-spacing: -.04em; font-variant-numeric: tabular-nums; background: linear-gradient(110deg, var(--plum), var(--magenta)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .counter span { display: block; margin-top: 6px; color: var(--muted); font-size: 13.5px; }
+    .live { display: inline-flex; align-items: center; gap: 7px; margin-top: 7px; color: #7b7384; font-size: 12px; }
+    .live::before { width: 8px; height: 8px; border-radius: 50%; background: #cf9c2c; content: ""; }
+    .live.is-on::before { background: #2a9d68; animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(42,157,104,.5); } 70% { box-shadow: 0 0 0 9px rgba(42,157,104,0); } 100% { box-shadow: 0 0 0 0 rgba(42,157,104,0); } }
+    .bump { animation: bump .6s var(--ease); }
+    @keyframes bump { 40% { transform: scale(1.12); } }
+
+    /* ---------- Pantalla de elección ---------- */
+    .chooser { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+    .choice { position: relative; display: flex; flex-direction: column; gap: 14px; padding: 32px; border-radius: 26px; background: #fff; text-decoration: none; box-shadow: var(--shadow), var(--edge); transition: transform .5s var(--ease), box-shadow .5s; }
+    .choice::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; padding: 1.5px; background: conic-gradient(from var(--angle), #ebe4ee, #ebe4ee 40%, #f6c646, #c41d65, #7425a5, #ebe4ee 75%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+    .choice:hover::after { animation: spin 2.6s linear infinite; }
+    @keyframes spin { to { --angle: 360deg; } }
+    .choice:hover { box-shadow: var(--shadow-xl), var(--edge); }
+    .choice-icon { width: 62px; height: 62px; display: grid; place-items: center; border-radius: 19px; background: linear-gradient(135deg, #f6c646, #f27b35 45%, #c41d65); color: #fff; box-shadow: 0 14px 26px -10px rgba(196,29,101,.7), inset 0 1px 0 rgba(255,255,255,.45); transform: translateZ(30px); }
+    .choice-icon svg { width: 30px; height: 30px; }
+    .choice h3 { margin: 4px 0 0; font-size: 25px; letter-spacing: -.02em; color: var(--ink); transform: translateZ(20px); }
+    .choice p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.65; }
+    .choice-go { margin-top: auto; color: var(--magenta); font-weight: 800; font-size: 14px; display: inline-flex; gap: 6px; }
+    .choice-go i { font-style: normal; transition: transform .3s var(--ease); }
+    .choice:hover .choice-go i { transform: translateX(6px); }
+
+    /* ---------- Agenda semanal ---------- */
+    .week-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
+    .week-nav { display: flex; align-items: center; gap: 12px; }
+    .week-label { font-weight: 800; font-size: 17px; color: var(--plum); text-align: center; }
+    .week-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+    .chip { border: 1px solid #ddd2e4; border-radius: 999px; padding: 8px 15px; background: #fff; color: #4a3e52; font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: var(--shadow-sm); transition: all .3s var(--ease); }
+    .chip:hover { transform: translateY(-1px); }
+    .chip[aria-pressed="true"] { background: linear-gradient(120deg, var(--plum), var(--purple)); border-color: transparent; color: #fff; box-shadow: 0 10px 20px -10px rgba(74,23,109,.9); }
+    .week-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 12px; align-items: start; }
+    .week-grid.swap { animation: swapIn .5s var(--ease); }
+    @keyframes swapIn { from { opacity: 0; transform: translateX(var(--dir, 20px)); } }
+    .day { min-width: 0; border: 1px solid var(--line); border-radius: 18px; background: #fff; overflow: hidden; box-shadow: var(--shadow-sm), var(--edge); }
+    .day.is-empty { background: rgba(255,255,255,.6); box-shadow: none; }
+    .day.is-today { border-color: #e9b9d0; box-shadow: 0 0 0 3px rgba(196,29,101,.12), var(--shadow); }
+    .day-head { padding: 13px 14px; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #fbf7fd, #fff); }
+    .day-head small { display: block; color: var(--magenta); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .day-head strong { display: block; font-size: 17px; color: var(--ink); }
+    .day-body { display: grid; gap: 10px; padding: 12px; }
+    .slot { position: relative; border-left: 4px solid var(--purple); border-radius: 12px; padding: 11px 12px; background: linear-gradient(180deg, #fcfaff, #f7f2fb); box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 6px 14px -10px rgba(42,15,64,.3); transition: transform .3s var(--ease), box-shadow .3s; }
+    .slot:hover { transform: translateY(-2px); box-shadow: 0 12px 22px -12px rgba(42,15,64,.45); }
+    .slot.is-virtual { border-left-color: #f27b35; }
+    .slot.is-presencial { border-left-color: #2a9d68; }
+    .slot.is-mine { background: linear-gradient(180deg, #fff8ec, #fff1dc); }
+    .slot-time { display: block; color: var(--plum); font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .slot-title { display: block; margin-top: 4px; font-size: 13px; line-height: 1.4; font-weight: 700; color: var(--ink); }
+    .slot-meta { display: block; margin-top: 5px; color: var(--muted); font-size: 11.5px; line-height: 1.45; }
+    .slot-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; margin-top: 8px; }
+    .slot-seats { border-radius: 999px; padding: 3px 9px; background: #fff; border: 1px solid #e3d8ea; color: #5a4d63; font-size: 11px; font-weight: 700; }
+    .slot-seats.low { border-color: #f3c3a2; color: #a4471a; background: #fff6ef; }
+    .slot-add { border: 0; border-radius: 999px; padding: 4px 10px; background: var(--plum); color: #fff; font-size: 11px; font-weight: 800; cursor: pointer; transition: background .2s, transform .2s; }
+    .slot-add:hover:not(:disabled) { transform: scale(1.05); }
+    .slot-add[aria-pressed="true"] { background: #2a9d68; }
+    .slot-add:disabled { background: #b9aec2; cursor: not-allowed; }
+    .day-empty { padding: 14px; color: #9a92a2; font-size: 12px; text-align: center; }
+    .block-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 18px; color: var(--muted); font-size: 12px; }
+    .block-legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; background: #2a9d68; }
+    .block-legend .v::before { background: #f27b35; }
+    .block-legend .m::before { background: #ffe1b8; border: 1px solid #f3c3a2; }
+    .empty-note { grid-column: 1 / -1; border: 1px dashed #cbbbd4; border-radius: 16px; padding: 24px; color: var(--muted); text-align: center; background: #fff; }
+
+    /* ---------- Oferta ---------- */
+    .offer-tools { position: relative; display: grid; grid-template-columns: minmax(200px, 1.6fr) repeat(4, minmax(140px, 1fr)); gap: 10px; margin-bottom: 14px; padding: 12px; border-radius: 20px; background: rgba(255,255,255,.75); border: 1px solid var(--line); box-shadow: var(--shadow-sm), var(--edge); backdrop-filter: blur(8px); }
+    .field-control { width: 100%; min-height: 46px; border: 1px solid #ddd2e4; border-radius: 12px; padding: 10px 12px; background: #fff; color: var(--ink); outline: none; font-size: 15px; transition: border-color .2s, box-shadow .2s; }
+    .field-control:focus { border-color: var(--purple); box-shadow: 0 0 0 4px rgba(116,37,165,.14); }
+    .offer-count { min-height: 20px; margin: 6px 0 18px; color: var(--muted); font-size: 13px; }
+    .offer-count button { border: 0; background: none; color: var(--magenta); font-weight: 700; cursor: pointer; padding: 0 4px; }
+    .course-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    .course-card { display: flex; flex-direction: column; min-width: 0; border: 1px solid var(--line); border-radius: 22px; padding: 22px; background: linear-gradient(180deg, #fff 0%, #fdfbfe 100%); box-shadow: var(--shadow-sm), var(--edge); transition: transform .5s var(--ease), box-shadow .5s; animation: cardIn .6s var(--ease) both; animation-delay: calc(var(--i, 0) * 45ms); }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(18px) scale(.98); } }
+    .course-card:hover { box-shadow: var(--shadow-xl), var(--edge); }
+    .course-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 5px 11px; background: #f5eafa; color: #5f2080; font-size: 11px; font-weight: 800; }
+    .pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .pill.orange { background: #fff1e2; color: #934a14; }
+    .pill.green { background: var(--mint); color: var(--ok); }
+    .duration { display: inline-flex; align-items: baseline; gap: 6px; border-radius: 12px; padding: 6px 12px; background: linear-gradient(120deg, #fff6dc, #ffeede); color: #6b3412; box-shadow: inset 0 1px 0 #fff, 0 4px 10px -6px rgba(242,123,53,.6); }
+    .duration strong { font-size: 19px; letter-spacing: -.02em; }
+    .duration span { font-size: 12px; font-weight: 700; }
+    .course-axis { display: block; margin-top: 16px; color: var(--magenta); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .course-card h3 { margin: 8px 0 8px; font-size: 17px; line-height: 1.35; letter-spacing: -.01em; }
+    .course-pitch { margin: 0; color: #5f5969; font-size: 13px; line-height: 1.6; }
+    .course-facilitator { margin: 12px 0 0; color: var(--muted); font-size: 12.5px; }
+    .session-options { display: grid; gap: 8px; margin-top: 14px; }
+    .session-option { display: flex; align-items: flex-start; gap: 10px; border: 1px solid #ece4f0; border-radius: 14px; padding: 10px 12px; cursor: pointer; background: #fff; transition: border-color .2s, background .2s, box-shadow .2s; }
+    .session-option:hover { border-color: #cdb8dd; background: #fdfbfe; }
+    .session-option:has(input:checked) { border-color: #b898cf; background: linear-gradient(180deg, #fbf6fe, #f6eefc); box-shadow: 0 0 0 3px rgba(116,37,165,.1); }
+    .session-option input { margin-top: 3px; accent-color: var(--purple); width: 17px; height: 17px; flex: 0 0 auto; }
+    .session-option > span { min-width: 0; flex: 1; color: #3f3649; font-size: 12.5px; line-height: 1.45; }
+    .session-option small { display: block; margin-top: 3px; color: #7f7689; font-size: 11.5px; }
+    .seatbar { height: 5px; margin-top: 7px; border-radius: 5px; background: #efe8f3; overflow: hidden; }
+    .seatbar i { display: block; height: 100%; width: var(--w, 0%); border-radius: inherit; background: linear-gradient(90deg, #2a9d68, #f6c646 70%, #f27b35); transition: width .9s var(--ease); }
+    .session-option.is-full { opacity: .6; cursor: not-allowed; }
+    .course-more { margin-top: 14px; border-top: 1px solid #f0ebf2; padding-top: 12px; color: #5c5361; font-size: 12.5px; line-height: 1.6; }
+    .course-more summary { color: var(--plum); font-weight: 700; cursor: pointer; }
+    .course-more p { margin: 10px 0 0; }
+    .course-more ul { margin: 8px 0 0; padding-left: 18px; }
+    .more-row { display: flex; justify-content: center; margin-top: 28px; }
+
+    /* Barra flotante de selección */
+    .selection-strip { position: fixed; z-index: 25; left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); display: flex; align-items: center; justify-content: space-between; gap: 16px; width: min(640px, calc(100% - 28px)); border: 1px solid rgba(229,217,235,.9); border-radius: 20px; padding: 12px 14px 12px 18px; background: rgba(255,255,255,.86); backdrop-filter: blur(16px) saturate(1.5); -webkit-backdrop-filter: blur(16px) saturate(1.5); box-shadow: 0 24px 50px -18px rgba(43,17,59,.5), var(--edge); transform: translate(-50%, 0); transition: transform .5s var(--ease), opacity .4s; }
+    .selection-strip.is-away { transform: translate(-50%, 140%); opacity: 0; pointer-events: none; }
+    .selection-strip strong { display: block; font-size: 14px; }
+    .selection-strip span { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; }
+    .selection-strip .meter { display: flex; gap: 4px; margin-top: 6px; }
+    .selection-strip .meter i { width: 26px; height: 5px; border-radius: 5px; background: #e8dfee; transition: background .3s; }
+    .selection-strip .meter i.on { background: var(--brand-grad); }
+    .selection-strip .button { min-height: 42px; padding: 10px 16px; font-size: 13px; white-space: nowrap; }
+
+    /* Banda de constancias */
+    .cert-band { position: relative; overflow: hidden; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 22px; margin-top: 60px; padding: 28px 30px; border-radius: 26px; background: linear-gradient(115deg, #2a0f40, #5b1d7e 60%, #9a1f6a); color: #fff; box-shadow: var(--shadow-xl), inset 0 1px 0 rgba(255,255,255,.2); }
+    .cert-band::after { content: ""; position: absolute; top: -50%; left: -30%; width: 40%; height: 200%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.14), transparent); transform: rotate(12deg); animation: sweep 6s ease-in-out infinite; }
+    @keyframes sweep { 0%, 60% { left: -40%; } 100% { left: 130%; } }
+    .cert-band-icon { width: 66px; height: 66px; display: grid; place-items: center; border-radius: 20px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.2); color: #f8d468; box-shadow: inset 0 1px 0 rgba(255,255,255,.25); }
+    .cert-band-icon svg { width: 32px; height: 32px; }
+    .cert-band h3 { margin: 0 0 6px; font-size: 22px; letter-spacing: -.01em; }
+    .cert-band p { margin: 0; color: #eadcf0; font-size: 14px; line-height: 1.6; }
+    .cert-band .note { margin-top: 8px; color: #d9c4e6; font-size: 12px; }
+    .cert-actions { position: relative; z-index: 1; display: grid; gap: 8px; }
+    .cert-actions .button { white-space: nowrap; }
+    .linkish { border: 0; background: none; color: #f8d468; font-size: 12.5px; font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ---------- Mapa Teocali ---------- */
+    .map-layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 28px; align-items: start; }
+    .map-stage { position: relative; border-radius: 28px; padding: 26px 20px 50px; background: radial-gradient(ellipse at 50% 110%, rgba(196,29,101,.25), transparent 55%), linear-gradient(160deg, #241237, #42185d); box-shadow: var(--shadow-xl), inset 0 1px 0 rgba(255,255,255,.15); overflow: hidden; }
+    .map-stage::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 32%; background: linear-gradient(180deg, transparent, rgba(255,255,255,.06)); border-top: 1px solid rgba(255,255,255,.08); }
+    .map-figure { position: relative; max-width: 620px; margin: 0 auto; }
+    .map-figure img { width: 100%; height: auto; filter: drop-shadow(0 26px 30px rgba(0,0,0,.5)); }
+    .map-figure .reflection { position: absolute; left: 0; right: 0; top: 100%; transform: scaleY(-1) translateY(18px); opacity: .22; filter: blur(1px); mask-image: linear-gradient(to top, rgba(0,0,0,.8), transparent 35%); -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,.8), transparent 35%); pointer-events: none; }
+    .map-overlay { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .floor { cursor: pointer; outline: none; }
+    .floor rect { fill: rgba(255,255,255,0); stroke: rgba(255,255,255,0); stroke-width: 3; transition: fill .3s, stroke .3s; }
+    .floor:hover rect, .floor:focus-visible rect { fill: rgba(255,224,138,.28); stroke: rgba(255,255,255,.7); }
+    .floor.is-active rect { fill: url(#floorGlow); stroke: #fff; filter: drop-shadow(0 0 14px rgba(246,198,70,.9)); }
+    .floor.is-pending rect { stroke-dasharray: 10 8; }
+    .floor text { fill: #fff; font-size: 22px; font-weight: 800; paint-order: stroke; stroke: rgba(36,18,55,.75); stroke-width: 5px; opacity: 0; transition: opacity .3s; pointer-events: none; }
+    .floor:hover text, .floor.is-active text, .floor:focus-visible text { opacity: 1; }
+    .level-buttons { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 16px; }
+    .level-buttons button { border: 1px solid #ddd2e4; border-radius: 14px; padding: 10px 8px; background: #fff; color: #4a3e52; font-size: 12.5px; font-weight: 800; cursor: pointer; box-shadow: var(--shadow-sm); transition: all .3s var(--ease); }
+    .level-buttons button small { display: block; color: var(--muted); font-weight: 600; font-size: 11px; }
+    .level-buttons button[aria-pressed="true"] { background: linear-gradient(120deg, var(--plum), var(--purple)); color: #fff; border-color: transparent; box-shadow: 0 12px 22px -12px rgba(74,23,109,.9); }
+    .level-buttons button[aria-pressed="true"] small { color: #eadcf0; }
+    .level-panel { border: 1px solid var(--line); border-radius: 24px; padding: 26px; background: #fff; box-shadow: var(--shadow), var(--edge); }
+    .level-panel.swap { animation: swapIn .45s var(--ease); }
+    .level-panel h3 { margin: 6px 0 8px; font-size: 23px; letter-spacing: -.02em; }
+    .level-panel p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
+    .room-list { display: grid; gap: 10px; margin: 18px 0 0; padding: 0; list-style: none; }
+    .room-list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid #ece4f0; border-radius: 14px; padding: 11px 14px; font-size: 14px; font-weight: 600; transition: border-color .2s, transform .3s var(--ease); }
+    .room-list li:hover { border-color: #d6c2e3; transform: translateX(4px); }
+    .room-list li > span { display: flex; align-items: center; gap: 10px; }
+    .room-list li > span::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--brand-grad); flex: 0 0 auto; box-shadow: 0 0 0 4px rgba(196,29,101,.12); }
+    .room-list button { border: 0; background: none; color: var(--magenta); font-size: 12px; font-weight: 800; cursor: pointer; white-space: nowrap; }
+    .room-note { margin-top: 18px; border-radius: 14px; padding: 13px 15px; background: #fff7ea; color: #6b4a1f; font-size: 13px; line-height: 1.6; }
+    .map-caveat { margin-top: 22px; color: var(--muted); font-size: 12.5px; }
+    .tour-link { display: inline-flex; margin-top: 16px; color: var(--plum); font-size: 13.5px; font-weight: 800; }
+
+    /* ---------- Inscripción ---------- */
+    .reg-layout { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(260px, .7fr); gap: 24px; align-items: start; }
+    .card { border: 1px solid var(--line); border-radius: 24px; padding: 28px; background: #fff; box-shadow: var(--shadow), var(--edge); }
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .field { display: grid; gap: 7px; min-width: 0; border: 0; padding: 0; margin: 0; }
+    .field.full { grid-column: 1 / -1; }
+    .field > label, .field > .label, .field > legend { color: #3f3649; font-size: 13px; font-weight: 700; padding: 0; }
+    .req { color: var(--magenta); }
+    .hint { color: var(--muted); font-size: 12px; line-height: 1.5; font-weight: 400; }
+    .field input:not([type=checkbox]), .field select { width: 100%; min-height: 48px; border: 1.5px solid #e2d8e8; border-radius: 13px; padding: 10px 13px; background: #fbf9fc; color: var(--ink); outline: none; font-size: 16.5px; transition: border-color .2s, box-shadow .2s, background .2s; }
+    .field input:not([type=checkbox]):focus, .field select:focus { border-color: var(--purple); background: #fff; box-shadow: 0 0 0 4px rgba(116,37,165,.14); }
+    .field input[aria-invalid="true"], .field select[aria-invalid="true"] { border-color: #f0a98c; background: #fff6f1; }
+    .check-grid { display: grid; gap: 8px; }
+    .check { display: flex; align-items: center; gap: 10px; border: 1.5px solid #e4dbea; border-radius: 13px; padding: 11px 12px; background: #fff; font-size: 14px; cursor: pointer; transition: border-color .2s, background .2s, box-shadow .2s; }
+    .check input { width: 18px; height: 18px; accent-color: var(--purple); flex: 0 0 auto; }
+    .check:has(input:checked) { border-color: #b898cf; background: #faf6fd; box-shadow: 0 0 0 3px rgba(116,37,165,.1); }
+    .program-box { max-height: 260px; overflow: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; padding: 8px; border: 1.5px solid #e4dbea; border-radius: 14px; background: #fbf9fc; }
+    .program-box .check { padding: 8px 10px; font-size: 13px; border-width: 1px; }
+    .selected-list { display: grid; gap: 8px; }
+    .selected-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; border: 1px solid #ece4f0; border-radius: 13px; padding: 11px 12px; background: linear-gradient(180deg, #fff, #fcf9fe); animation: cardIn .4s var(--ease) both; }
+    .selected-row strong { display: block; font-size: 13px; line-height: 1.4; }
+    .selected-row span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+    .remove-selection { flex: 0 0 auto; border: 0; background: none; color: var(--danger); font-size: 12px; font-weight: 700; cursor: pointer; }
+    .consent { display: flex; align-items: flex-start; gap: 10px; margin-top: 20px; color: #5f5969; font-size: 13px; line-height: 1.6; }
+    .consent input { margin-top: 4px; accent-color: var(--purple); width: 17px; height: 17px; flex: 0 0 auto; }
+    .form-submit { width: 100%; margin-top: 18px; min-height: 54px; font-size: 16px; }
+    .form-status { min-height: 24px; margin: 12px 0 0; font-size: 13.5px; line-height: 1.55; }
+    .form-status.success { color: var(--ok); }
+    .form-status.error { color: var(--danger); }
+    .form-status.pending { color: #68447d; }
+    .info-card { position: sticky; top: 96px; overflow: hidden; background: linear-gradient(160deg, #2a0f40, #43195e); color: #fff; border: 0; box-shadow: var(--shadow-xl), inset 0 1px 0 rgba(255,255,255,.15); }
+    .info-card::before { content: ""; position: absolute; right: -60px; top: -60px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(246,198,70,.25), transparent 70%); }
+    .info-card h3 { position: relative; margin: 0 0 14px; font-size: 20px; }
+    .info-card ul { position: relative; margin: 0; padding-left: 18px; color: #e3d5ea; font-size: 13.5px; line-height: 1.65; }
+    .info-card li + li { margin-top: 8px; }
+    .info-card a { color: #ffd466; }
+    .privacy-note { position: relative; margin: 20px 0 0; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.16); color: #c7b3d3; font-size: 12px; line-height: 1.6; }
+    .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+    /* ---------- Preguntas y contacto ---------- */
+    .faq-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: start; }
+    .faq-list details { border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; background: #fff; box-shadow: var(--shadow-sm), var(--edge); transition: box-shadow .3s; }
+    .faq-list details[open] { box-shadow: var(--shadow), var(--edge); }
+    .faq-list summary { position: relative; padding-right: 30px; color: #2f2639; font-size: 14.5px; font-weight: 700; line-height: 1.5; cursor: pointer; list-style: none; }
+    .faq-list summary::-webkit-details-marker { display: none; }
+    .faq-list summary::after { position: absolute; right: 0; top: -1px; width: 24px; height: 24px; display: grid; place-items: center; content: "+"; border-radius: 50%; background: #f5eafa; color: var(--magenta); font-size: 17px; transition: transform .35s var(--ease); }
+    .faq-list details[open] summary::after { transform: rotate(45deg); }
+    .faq-list details p { margin: 12px 0 0; color: var(--muted); font-size: 13.5px; line-height: 1.7; animation: swapIn .35s var(--ease); }
+    .contact-band { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 28px; border-radius: 22px; padding: 24px 28px; background: linear-gradient(110deg, #f9edf5, #fff5e4); box-shadow: var(--shadow-sm), var(--edge); }
+    .contact-band strong { display: block; font-size: 16px; }
+    .contact-band span { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; }
+
+    footer { position: relative; padding: 36px 0 calc(36px + env(safe-area-inset-bottom)); background: var(--plum-deep); color: #d9c9e2; }
+    footer::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--brand-grad); }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .footer-inner p { margin: 0; font-size: 12.5px; line-height: 1.6; }
+    .footer-inner a { color: #fff; }
+    .footer-inner .linkish { color: #f8d468; }
+
+    .to-top { position: fixed; z-index: 24; right: 18px; bottom: 90px; width: 46px; height: 46px; border: 0; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--plum); cursor: pointer; box-shadow: var(--shadow), var(--edge); transform: translateY(20px) scale(.8); opacity: 0; pointer-events: none; transition: all .4s var(--ease); }
+    .to-top.is-on { transform: none; opacity: 1; pointer-events: auto; }
+    .to-top svg { width: 20px; height: 20px; }
+
+    /* ---------- Diálogos ---------- */
+    dialog { width: min(640px, calc(100% - 28px)); max-height: calc(100dvh - 32px); padding: 0; border: 0; border-radius: 26px; background: #fff; color: var(--ink); box-shadow: 0 40px 100px -20px rgba(20,6,30,.6), var(--edge); overflow: auto; }
+    dialog::backdrop { background: rgba(24,10,34,.55); backdrop-filter: blur(5px); }
+    dialog[open] { animation: pop .38s var(--ease); }
+    @keyframes pop { from { opacity: 0; transform: translateY(16px) scale(.97); } }
+    .dialog-hero { position: relative; overflow: hidden; padding: 22px 26px; background: linear-gradient(120deg, #2a0f40, #5b1d7e 65%, #9a1f6a); color: #fff; }
+    .dialog-hero::after { content: ""; position: absolute; right: -40px; top: -60px; width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle, rgba(246,198,70,.35), transparent 70%); }
+    .dialog-hero h3 { position: relative; margin: 0; font-size: 22px; letter-spacing: -.02em; }
+    .dialog-hero p { position: relative; margin: 4px 0 0; color: #e8d9f0; font-size: 13px; }
+    .dialog-body { padding: 24px 26px 26px; }
+    .dialog-close { position: absolute; z-index: 1; right: 16px; top: 16px; width: 38px; height: 38px; border: 1px solid rgba(255,255,255,.35); border-radius: 50%; background: rgba(255,255,255,.12); color: #fff; font-size: 22px; line-height: 1; cursor: pointer; }
+    .notice-list { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+    .notice-list li { display: grid; grid-template-columns: 36px 1fr; gap: 12px; align-items: start; font-size: 14.5px; line-height: 1.6; color: #3f3649; }
+    .notice-list b { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 12px; background: linear-gradient(135deg, #f6c646, #f27b35); color: #281337; font-size: 14px; box-shadow: 0 8px 16px -8px rgba(242,123,53,.8), inset 0 1px 0 rgba(255,255,255,.5); }
+    .dialog-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+    .dialog-actions .button { min-height: 46px; padding: 10px 18px; font-size: 14px; }
+    .tabs { position: relative; display: grid; grid-template-columns: 1fr 1fr; padding: 4px; border-radius: 16px; background: #f1eaf6; margin-bottom: 20px; }
+    .tabs .pill-bg { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 12px; background: #fff; box-shadow: var(--shadow-sm); transition: transform .4s var(--ease); }
+    .tabs[data-active="descarga"] .pill-bg { transform: translateX(100%); }
+    .tabs button { position: relative; z-index: 1; border: 0; border-radius: 12px; padding: 11px 10px; background: transparent; color: #5a4d63; font-weight: 700; font-size: 13.5px; cursor: pointer; }
+    .tabs button[aria-selected="true"] { color: var(--plum); }
+    .stepper { display: flex; align-items: center; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
+    .stepper li { display: flex; align-items: center; gap: 8px; color: #9a90a3; font-size: 12.5px; font-weight: 700; }
+    .stepper li b { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; background: #efe8f3; color: #7c7085; font-size: 12px; transition: all .3s; }
+    .stepper li.is-on { color: var(--plum); }
+    .stepper li.is-on b { background: linear-gradient(135deg, var(--plum), var(--magenta)); color: #fff; box-shadow: 0 6px 14px -6px rgba(196,29,101,.8); }
+    .stepper li.is-done b { background: #2a9d68; color: #fff; }
+    .stepper li + li::before { content: ""; width: 22px; height: 2px; border-radius: 2px; background: #e6dcec; }
+    .code-input { font-size: 22px !important; font-weight: 800; letter-spacing: .3em; text-transform: uppercase; text-align: center; }
+    .code-summary { display: grid; gap: 6px; margin: 16px 0; border-radius: 16px; padding: 16px 18px; background: linear-gradient(180deg, #fbf7fd, #f6effb); border: 1px solid #e8dcf0; font-size: 14px; animation: swapIn .4s var(--ease); }
+    .code-summary strong { font-size: 16px; color: var(--plum); line-height: 1.4; }
+    .code-summary span { color: #5f5969; }
+    .success-box { text-align: center; padding: 8px 0 4px; animation: swapIn .4s var(--ease); }
+    .check-circle { width: 78px; height: 78px; margin: 0 auto 14px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, #7425a5, #c41d65 60%, #f27b35); box-shadow: 0 18px 30px -12px rgba(196,29,101,.8), inset 0 2px 0 rgba(255,255,255,.35); }
+    .check-circle svg { width: 38px; height: 38px; }
+    .check-circle path { stroke-dasharray: 40; stroke-dashoffset: 40; animation: draw .7s .2s var(--ease) forwards; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    .success-box h4 { margin: 0 0 6px; font-size: 20px; }
+    .success-box p { margin: 0 auto; max-width: 440px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .folio { display: inline-block; margin: 14px 0 4px; padding: 10px 16px; border-radius: 12px; background: #f5eafa; color: var(--plum); font-family: ui-monospace, Consolas, monospace; font-size: 17px; font-weight: 800; letter-spacing: .06em; }
+    .status-track { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 16px 0 6px; }
+    .status-track div { position: relative; padding-top: 14px; text-align: center; color: #9a90a3; font-size: 11.5px; font-weight: 700; }
+    .status-track div::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; border-radius: 6px; background: #ece4f0; }
+    .status-track div.on { color: var(--plum); }
+    .status-track div.on::before { background: var(--brand-grad); }
+    .verify-ok { border-radius: 16px; padding: 18px; background: #e9f7ef; color: #11583a; }
+    .verify-bad { border-radius: 16px; padding: 18px; background: #fdeef2; color: #8c1c3c; }
+
+    /* ---------- Aparición al desplazarse ---------- */
+    .reveal { opacity: 0; transform: translateY(26px) scale(.985); transition: opacity .8s var(--ease), transform .8s var(--ease); transition-delay: calc(var(--d, 0) * 90ms); }
+    .reveal.is-in { opacity: 1; transform: none; }
+
+    .toast { position: fixed; z-index: 90; left: 50%; top: 84px; max-width: min(440px, calc(100% - 36px)); border-radius: 16px; padding: 13px 18px; background: rgba(36,20,52,.94); color: #fff; box-shadow: var(--shadow-xl); font-size: 14px; line-height: 1.5; transform: translate(-50%, 0); animation: toastIn .45s var(--ease); backdrop-filter: blur(8px); }
+    @keyframes toastIn { from { opacity: 0; transform: translate(-50%, -16px); } }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 1100px) {
+      .week-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .course-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .offer-tools { grid-template-columns: 1fr 1fr; }
+      .offer-tools .field-control:first-of-type { grid-column: 1 / -1; }
+    }
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .stage { max-width: 460px; margin: 10px auto 30px; }
+      .reg-layout, .map-layout { grid-template-columns: 1fr; }
+      .info-card { position: static; }
+      .cert-band { grid-template-columns: auto 1fr; }
+      .cert-actions { grid-column: 1 / -1; justify-self: start; }
+      .faq-list { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .wrap { width: calc(100% - 32px); }
+      .menu-toggle { display: inline-flex; align-items: center; }
+      .nav-links { position: absolute; top: calc(100% + 6px); left: 16px; right: 16px; display: none; flex-direction: column; align-items: stretch; gap: 2px; padding: 8px; border: 1px solid #e4d9ea; border-radius: 18px; background: rgba(255,255,255,.97); box-shadow: var(--shadow-xl); }
+      .nav-links.is-open { display: flex; animation: swapIn .3s var(--ease); }
+      .nav-links a { padding: 13px 14px; border-radius: 12px; }
+      .nav-cta { margin: 4px 0 0; text-align: center; }
+      .counters, .chooser { grid-template-columns: 1fr; }
+      .week-grid { grid-template-columns: 1fr; }
+      .day.is-empty { display: none; }
+      .day-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+      .offer-tools { grid-template-columns: 1fr; }
+      .offer-tools .field-control:first-of-type { grid-column: auto; }
+      .course-grid { grid-template-columns: 1fr; }
+      .section-head { flex-direction: column; align-items: flex-start; }
+      .carousel-controls { align-self: flex-end; }
+      .cert-band { grid-template-columns: 1fr; }
+      .form-grid, .program-box { grid-template-columns: 1fr; }
+      .card { padding: 20px; }
+      .contact-band, .footer-inner { flex-direction: column; align-items: flex-start; }
+      .selection-strip { flex-direction: column; align-items: stretch; }
+      .selection-strip .button { justify-content: center; }
+      section.block { padding: 66px 0; }
+      .showcase { padding: 50px 0 30px; }
+      .hero-actions .button { flex: 1 1 100%; }
+      .stage .badge { display: none; }
+      .countdown .unit { min-width: 0; flex: 1; }
+      .level-buttons { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 420px) {
+      .brand img { height: 32px !important; }
+      .counter strong { font-size: 30px; }
+      .dialog-body { padding: 20px; }
+      .dialog-actions .button { flex: 1 1 100%; }
+      .stepper li span { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <header class="topbar" id="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#inicio" aria-label="Universidad del Valle de Puebla, inicio">
+        <img src="assets/img/logo-uvp.png" alt="UVP Universidad del Valle de Puebla" width="300" height="63">
+      </a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="navLinks">Menú</button>
+      <nav class="nav-links" id="navLinks" aria-label="Navegación principal">
+        <a href="#elige" data-spy="elige">Agenda y oferta</a>
+        <a href="#teocali" data-spy="teocali">Edificio Teocali</a>
+        <a href="#preguntas" data-spy="preguntas">Preguntas frecuentes</a>
+        <a class="nav-cta" href="#inscripcion">Inscribirme</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <!-- 1. Encabezado y pantalla principal -->
+    <section class="hero" id="inicio">
+      <div class="aurora" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow">Universidad del Valle de Puebla</span>
+          <h1><span class="shine">Jornada de Formación y Superación Docente</span></h1>
+          <p class="hero-objective">Esta jornada busca fortalecer las herramientas teóricas, metodológicas, tecnológicas, pedagógicas y didácticas de los docentes de la UVP a través de ejercicios que enriquezcan su práctica educativa para favorecer aprendizajes significativos en sus estudiantes.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#carrusel-cursos">Explorar cursos <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="countdown" id="countdown" aria-live="off"></div>
+          <ul class="hero-meta">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span id="eventDates">21 de diciembre de 2026 — 15 de enero de 2027</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>Complejo Teocalli · UVP</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16v10H4zM8 20h8M12 16v4"/></svg><span>Presencial, virtual y autogestiva</span></li>
+          </ul>
+        </div>
+        <div class="stage" id="stage" aria-hidden="true">
+          <div class="building" id="building">
+            <img src="assets/img/teocalli-3d.png" alt="" width="824" height="588">
+            <img class="reflection" src="assets/img/teocalli-3d.png" alt="" width="824" height="588">
+          </div>
+          <div class="badge b1"><div><b id="badgeInscritos">—</b>docentes inscritos</div></div>
+          <div class="badge b2"><div><b id="badgeSeats">—</b>lugares disponibles</div></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ticker" aria-hidden="true"><div class="ticker-track" id="tickerTrack"></div></div>
+
+    <!-- 2. Carrusel de cursos especializados -->
+    <section class="showcase" id="carrusel-cursos" aria-labelledby="tituloCarrusel">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <span class="kicker">Oferta especializada</span>
+            <h2 class="title" id="tituloCarrusel">Cursos especializados</h2>
+            <p class="lead">Desliza para conocer algunas de las propuestas especializadas de la jornada.</p>
+          </div>
+          <div class="carousel-controls">
+            <button class="icon-btn" type="button" id="carouselPrev" aria-label="Ver cursos anteriores"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+            <button class="icon-btn" type="button" id="carouselNext" aria-label="Ver más cursos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+          </div>
+        </div>
+        <div class="carousel" id="carousel" tabindex="0" aria-label="Carrusel de cursos especializados" aria-roledescription="carrusel"></div>
+        <div class="dots" id="carouselDots" role="group" aria-label="Elegir curso del carrusel"></div>
+      </div>
+    </section>
+
+    <!-- 9. Pantalla de elección: Agenda u Oferta -->
+    <section class="block" id="elige" aria-labelledby="tituloElige">
+      <div class="wrap">
+        <div class="counters">
+          <div class="counter reveal">
+            <div class="ring" id="ringInscritos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.4 3.3-5.5 6.5-5.5s5.9 2.1 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.8c1.7.7 2.9 2.4 3 5.2"/></svg></div>
+            <div><strong id="registeredCount" aria-live="polite">—</strong><span>Docentes inscritos</span><small class="live" id="connectionState">Conectando con el registro</small></div>
+          </div>
+          <div class="counter is-orange reveal" style="--d:1">
+            <div class="ring" id="ringSeats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3a3 3 0 0 0 0 6v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a3 3 0 0 0 0-6z"/><path d="M14 6v12" stroke-dasharray="2 3"/></svg></div>
+            <div><strong id="seatsAvailable" aria-live="polite">—</strong><span>Lugares disponibles en la jornada</span><small class="live" id="seatsCaption">Se actualiza con cada inscripción</small></div>
+          </div>
+        </div>
+
+        <div class="section-head reveal">
+          <div>
+            <span class="kicker">Tu recorrido</span>
+            <h2 class="title" id="tituloElige">¿Cómo quieres consultar los cursos?</h2>
+            <p class="lead">Elige la vista que te sea más útil para organizar tu semana o para encontrar el curso que buscas.</p>
+          </div>
+        </div>
+        <div class="chooser">
+          <a class="choice glare on-light reveal" href="#agenda" data-tilt>
+            <span class="choice-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4M7.5 14h2M11 14h2M14.5 14h2M7.5 17.5h2M11 17.5h2"/></svg></span>
+            <h3>Agenda</h3>
+            <p>Consulta los bloques, la modalidad y el aula de cada sesión, tomando como base un calendario semanal.</p>
+            <span class="choice-go">Ver calendario semanal <i aria-hidden="true">→</i></span>
+          </a>
+          <a class="choice glare on-light reveal" style="--d:1" href="#oferta" data-tilt>
+            <span class="choice-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M9 8h7M9 11.5h5"/></svg></span>
+            <h3>Oferta académica</h3>
+            <p>Filtra los cursos por tema, modalidad, tipo de actividad y facilitador.</p>
+            <span class="choice-go">Explorar la oferta <i aria-hidden="true">→</i></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Agenda semanal -->
+    <section class="block bg-soft" id="agenda" aria-labelledby="tituloAgenda">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <span class="kicker">Planea tu semana</span>
+            <h2 class="title" id="tituloAgenda">Agenda de la jornada</h2>
+            <p class="lead">Revisa la programación completa de cada semana: bloques, horarios, modalidad y aula. Puedes agregar sesiones a tu plan desde aquí.</p>
+          </div>
+        </div>
+        <div class="week-bar">
+          <div class="week-nav">
+            <button class="icon-btn" type="button" id="weekPrev" aria-label="Semana anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+            <span class="week-label" id="weekLabel" aria-live="polite"></span>
+            <button class="icon-btn" type="button" id="weekNext" aria-label="Semana siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+          </div>
+          <span class="hint" id="agendaCount" aria-live="polite"></span>
+        </div>
+        <div class="week-chips" id="weekChips" role="group" aria-label="Elegir semana"></div>
+        <div class="week-grid" id="weekGrid"></div>
+        <div class="block-legend" aria-hidden="true"><span>Presencial</span><span class="v">Virtual</span><span class="m">En tu plan</span></div>
+      </div>
+    </section>
+
+    <!-- 5. Oferta académica -->
+    <section class="block" id="oferta" aria-labelledby="tituloOferta">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <span class="kicker">Descubre lo que te inspira</span>
+            <h2 class="title" id="tituloOferta">Oferta académica</h2>
+            <p class="lead">Agrega al menos tres sesiones compatibles a tu plan. Puedes combinar modalidades presencial, virtual y autogestiva.</p>
+          </div>
+        </div>
+        <div class="offer-tools reveal">
+          <label class="sr-only" for="courseSearch">Buscar cursos</label>
+          <input class="field-control" id="courseSearch" type="search" placeholder="Buscar por curso, tema o facilitador">
+          <label class="sr-only" for="axisFilter">Filtrar por tema o eje</label>
+          <select class="field-control" id="axisFilter"><option value="">Todos los temas</option></select>
+          <label class="sr-only" for="modeFilter">Filtrar por modalidad</label>
+          <select class="field-control" id="modeFilter"><option value="">Todas las modalidades</option><option>Presencial</option><option>Virtual</option><option>Online (plataforma)</option></select>
+          <label class="sr-only" for="typeFilter">Filtrar por tipo de actividad</label>
+          <select class="field-control" id="typeFilter"><option value="">Todo tipo de actividad</option><option>Curso</option><option>Taller</option><option>Certificado</option></select>
+          <label class="sr-only" for="facilitatorFilter">Filtrar por facilitador</label>
+          <select class="field-control" id="facilitatorFilter"><option value="">Todos los facilitadores</option></select>
+        </div>
+        <p class="offer-count" id="catalogCount" aria-live="polite"></p>
+        <div class="course-grid" id="courseGrid"></div>
+        <div class="more-row"><button class="button button-outline" id="loadMore" type="button">Ver más cursos</button></div>
+
+        <div class="cert-band reveal" id="constancias">
+          <div class="cert-band-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="5.5"/><path d="M8.5 13.5 7 21l5-2.5L17 21l-1.5-7.5M10 9l1.5 1.5L14.5 7.5"/></svg></div>
+          <div style="position:relative;z-index:1">
+            <h3>¿Concluiste un curso o taller?</h3>
+            <p>Registra tu participación con el código de acceso de tu curso y descarga tu constancia en PDF. Solo se emite a quienes registraron su asistencia con el código QR y respondieron la evaluación final.</p>
+            <p class="note" id="certNote">Consultando el periodo de constancias…</p>
+          </div>
+          <div class="cert-actions">
+            <button class="button button-primary" type="button" id="openCertificate" disabled>Descargar constancia</button>
+            <button class="linkish" type="button" id="openVerify">Verificar un folio</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Mapa interactivo del edificio Teocali -->
+    <section class="block bg-soft" id="teocali" aria-labelledby="tituloTeocali">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <span class="kicker">Cómo llegar a tu sesión</span>
+            <h2 class="title" id="tituloTeocali">Mapa del edificio Teocali</h2>
+            <p class="lead">Selecciona un nivel del edificio para consultar los espacios donde se desarrollarán las actividades presenciales.</p>
+          </div>
+        </div>
+        <div class="map-layout">
+          <div class="reveal">
+            <div class="map-stage">
+              <div class="map-figure">
+                <img src="assets/img/teocalli-3d.png" alt="Representación del edificio Teocali con sus niveles" width="824" height="588" loading="lazy">
+                <img class="reflection" src="assets/img/teocalli-3d.png" alt="" width="824" height="588" loading="lazy" aria-hidden="true">
+                <svg class="map-overlay" id="mapOverlay" viewBox="0 0 824 588" role="group" aria-label="Niveles del edificio Teocali"></svg>
+              </div>
+            </div>
+            <div class="level-buttons" id="levelButtons" role="group" aria-label="Elegir nivel"></div>
+          </div>
+          <aside class="level-panel reveal" style="--d:1" id="levelPanel" aria-live="polite"></aside>
+        </div>
+        <p class="map-caveat">Distribución preliminar de niveles: la nomenclatura y la ubicación exacta de cada espacio se confirmarán con la información oficial del edificio antes de la jornada. <a class="tour-link" href="https://uvp.mx/recorridos/Teocalli" target="_blank" rel="noopener">Hacer el recorrido virtual del Teocalli ↗</a></p>
+      </div>
+    </section>
+
+    <!-- 6 y 7. Inscripción -->
+    <section class="block" id="inscripcion" aria-labelledby="tituloInscripcion">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <span class="kicker">Tu siguiente paso</span>
+            <h2 class="title" id="tituloInscripcion">Inscripción</h2>
+            <p class="lead">Completa tus datos con tu correo institucional y confirma las sesiones elegidas. Recibirás un correo con el resumen de tu inscripción.</p>
+          </div>
+        </div>
+        <div class="reg-layout">
+          <div class="card reveal">
+            <form id="registrationForm" novalidate>
+              <div class="form-grid">
+                <div class="field full"><label for="fullName">Nombre completo <span class="req" aria-hidden="true">*</span></label><input id="fullName" name="fullName" autocomplete="name" maxlength="120" required placeholder="Como aparecerá en tu constancia"></div>
+                <div class="field"><label for="email">Correo electrónico institucional <span class="req" aria-hidden="true">*</span></label><input id="email" name="email" type="email" autocomplete="email" maxlength="160" required placeholder="nombre@uvp.mx"></div>
+                <div class="field"><label for="teacherKey">Clave docente o administrativa <span class="req" aria-hidden="true">*</span></label><input id="teacherKey" name="teacherKey" maxlength="50" required></div>
+                <div class="field"><label for="campus">Plantel <span class="req" aria-hidden="true">*</span></label><select id="campus" name="campus" required></select></div>
+                <div class="field"><label for="division">División o área <span class="req" aria-hidden="true">*</span></label><select id="division" name="division" required></select></div>
+                <div class="field full"><label for="personType">¿Cómo te identificas? <span class="req" aria-hidden="true">*</span></label><select id="personType" name="personType" required></select></div>
+                <fieldset class="field full">
+                  <legend>Nivel o niveles educativos en los que impartes clases <span class="req" aria-hidden="true">*</span> <span class="hint">(puedes elegir más de uno)</span></legend>
+                  <div class="check-grid" id="academicLevels"></div>
+                </fieldset>
+                <div class="field full" id="postgraduateField" hidden><label for="postgraduateLevel">Nivel de posgrado</label><select id="postgraduateLevel" name="postgraduateLevel"></select></div>
+                <fieldset class="field full" id="programField" hidden>
+                  <legend>Programa(s) en los que impartes clases <span class="hint">(puedes elegir más de uno)</span></legend>
+                  <input class="field-control" id="programFilter" type="search" placeholder="Buscar programa" aria-label="Buscar programa">
+                  <div class="program-box" id="programs"></div>
+                </fieldset>
+                <div class="field full"><label for="experience">Antigüedad en UVP <span class="req" aria-hidden="true">*</span></label><select id="experience" name="experience" required></select></div>
+                <div class="field full"><span class="label">Sesiones elegidas <span class="req" aria-hidden="true">*</span></span><div class="selected-list" id="selectedList"></div><span class="hint">Necesitas al menos tres sesiones. No puedes elegir dos actividades que coincidan en fecha y horario.</span></div>
+              </div>
+              <label class="consent"><input id="privacyConsent" name="privacyConsent" type="checkbox" required><span>Autorizo el uso de estos datos para gestionar mi inscripción, comunicar cambios y enviar la confirmación. La información no se publicará en la página.</span></label>
+              <div class="hp" aria-hidden="true"><label for="website">No llenar</label><input id="website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+              <button class="button button-primary form-submit" type="submit" id="submitButton">Confirmar inscripción <span aria-hidden="true">→</span></button>
+              <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+          <aside class="card info-card reveal" style="--d:1">
+            <h3>Antes de confirmar</h3>
+            <ul>
+              <li>Selecciona un mínimo de tres sesiones durante la jornada.</li>
+              <li>Puedes combinar sesiones presenciales, virtuales y autogestivas.</li>
+              <li>Las actividades presenciales se realizan en el Complejo Teocalli.</li>
+              <li>Para recibir constancia, registra tu asistencia con el código QR y responde la evaluación final.</li>
+              <li>Para liberar un lugar o pedir ayuda, escribe a <a href="mailto:coord.formaciondocente@uvp.mx">coord.formaciondocente@uvp.mx</a>.</li>
+            </ul>
+            <p class="privacy-note">Los contadores son agregados. La página pública nunca muestra nombres, correos ni claves docentes; esos datos se guardan únicamente en el registro privado de la coordinación.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Preguntas frecuentes -->
+    <section class="block bg-soft" id="preguntas" aria-labelledby="tituloFaq">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <span class="kicker">Te acompañamos</span>
+            <h2 class="title" id="tituloFaq">Preguntas frecuentes</h2>
+            <p class="lead">Respuestas a las dudas más comunes sobre la jornada.</p>
+          </div>
+        </div>
+        <div class="faq-list" id="faqList"></div>
+        <div class="contact-band reveal">
+          <div><strong>¿Necesitas orientación?</strong><span>Centro de Formación y Superación Docente · Extensión 777</span></div>
+          <a class="button button-plum" href="mailto:coord.formaciondocente@uvp.mx">Escribir a coordinación</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <p><strong>UVP · Universidad del Valle de Puebla</strong><br>Jornada de Formación y Superación Docente · Diciembre 2026 — enero 2027</p>
+      <p>Información: <a href="mailto:coord.formaciondocente@uvp.mx">coord.formaciondocente@uvp.mx</a><br><button class="linkish" type="button" id="footerVerify">Verificar una constancia</button></p>
+    </div>
+  </footer>
+
+  <div class="selection-strip is-away" id="selectionStrip" role="region" aria-label="Tu plan de sesiones">
+    <div><strong id="selectionCount">0 sesiones seleccionadas</strong><span id="selectionHint">El requisito mínimo es de tres sesiones.</span><div class="meter" id="selectionMeter" aria-hidden="true"><i></i><i></i><i></i></div></div>
+    <a class="button button-primary" href="#inscripcion">Continuar con mi inscripción <span aria-hidden="true">→</span></a>
+  </div>
+  <button class="to-top" id="toTop" type="button" aria-label="Volver arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+
+  <!-- 7. Aviso previo a la confirmación de inscripción -->
+  <dialog id="noticeDialog" aria-labelledby="noticeTitle">
+    <div class="dialog-hero">
+      <h3 id="noticeTitle">Antes de confirmar tu inscripción</h3>
+      <p>Lee con atención los requisitos para obtener tu constancia.</p>
+      <button class="dialog-close" type="button" data-close aria-label="Cerrar">×</button>
+    </div>
+    <div class="dialog-body">
+      <ul class="notice-list">
+        <li><b>1</b><span>La constancia se emite <strong>únicamente</strong> a las personas que, al finalizar el curso o taller, registren su asistencia con el <strong>código QR</strong> y respondan la <strong>evaluación final</strong>.</span></li>
+        <li><b>2</b><span>Al terminar tu curso o taller, registra tu participación en <strong>Descargar constancia</strong> con el código de acceso de tu actividad. Cuando coordinación la valide, te llegará un aviso por correo.</span></li>
+        <li><b>3</b><span>Revisa tu correo institucional: ahí recibirás la confirmación de tu inscripción y, para las sesiones virtuales, el <strong>enlace de Zoom</strong>.</span></li>
+      </ul>
+      <div class="dialog-actions">
+        <button class="button button-light" type="button" data-close>Revisar mis datos</button>
+        <button class="button button-primary" type="button" id="noticeConfirm">Entendido, confirmar inscripción</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Constancias: registro y descarga -->
+  <dialog id="certDialog" aria-labelledby="certTitle">
+    <div class="dialog-hero">
+      <h3 id="certTitle">Constancias de participación</h3>
+      <p>Registra tu participación y descarga tu constancia en PDF.</p>
+      <button class="dialog-close" type="button" data-close aria-label="Cerrar">×</button>
+    </div>
+    <div class="dialog-body">
+      <div class="tabs" role="tablist" aria-label="Opciones de constancia" id="certTabs" data-active="registro">
+        <span class="pill-bg" aria-hidden="true"></span>
+        <button type="button" role="tab" id="tabRegistroBtn" aria-selected="true" aria-controls="panelRegistro" data-tab="registro">1 · Registrar participación</button>
+        <button type="button" role="tab" id="tabDescargaBtn" aria-selected="false" aria-controls="panelDescarga" data-tab="descarga">2 · Descargar constancia</button>
+      </div>
+
+      <section id="panelRegistro" role="tabpanel" aria-labelledby="tabRegistroBtn">
+        <ol class="stepper" id="certStepper"><li class="is-on" data-step="1"><b>1</b><span>Código</span></li><li data-step="2"><b>2</b><span>Tus datos</span></li><li data-step="3"><b>3</b><span>Listo</span></li></ol>
+        <form id="codigoForm" novalidate>
+          <div class="field"><label for="accessCode">Código de acceso de tu curso o taller <span class="req" aria-hidden="true">*</span></label><input class="code-input" id="accessCode" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="AB12CD"><span class="hint">El código se entrega al terminar el curso o taller (también viene en el QR). Es único para cada sesión.</span></div>
+          <div class="dialog-actions"><button class="button button-plum" type="submit" id="validateCodeBtn">Validar código</button></div>
+        </form>
+        <div class="code-summary" id="codeSummary" hidden></div>
+        <form id="certForm" novalidate hidden>
+          <div class="form-grid">
+            <div class="field full"><label for="certName">Nombre completo <span class="req" aria-hidden="true">*</span></label><input id="certName" maxlength="120" required autocomplete="name" placeholder="Como debe aparecer en tu constancia"><span class="hint">Revisa acentos y mayúsculas: así se imprimirá.</span></div>
+            <div class="field"><label for="certEmail">Correo electrónico institucional <span class="req" aria-hidden="true">*</span></label><input id="certEmail" type="email" maxlength="160" required autocomplete="email" placeholder="nombre@uvp.mx"></div>
+            <div class="field"><label for="certKey">Clave docente o administrativa <span class="req" aria-hidden="true">*</span></label><input id="certKey" maxlength="50" required></div>
+          </div>
+          <label class="consent"><input id="certConsent" type="checkbox" required><span>Autorizo el uso de estos datos para validar mi participación y emitir mi constancia.</span></label>
+          <div class="hp" aria-hidden="true"><label for="certWebsite">No llenar</label><input id="certWebsite" tabindex="-1" autocomplete="off"></div>
+          <div class="dialog-actions"><button class="button button-light" type="button" id="certBack">Cambiar código</button><button class="button button-primary" type="submit" id="certSubmit">Registrar mi participación</button></div>
+        </form>
+        <div id="certDone" hidden></div>
+        <p class="form-status" id="certStatus" role="status" aria-live="polite"></p>
+      </section>
+
+      <section id="panelDescarga" role="tabpanel" aria-labelledby="tabDescargaBtn" hidden>
+        <form id="descargaForm" novalidate>
+          <div class="form-grid">
+            <div class="field"><label for="dlKey">Clave docente o administrativa <span class="req" aria-hidden="true">*</span></label><input id="dlKey" maxlength="50" required></div>
+            <div class="field"><label for="dlCode">Código del curso <span class="req" aria-hidden="true">*</span></label><input id="dlCode" maxlength="12" required autocomplete="off" style="text-transform:uppercase"></div>
+            <div class="field full"><label for="dlIdent">Correo institucional con el que te registraste <span class="req" aria-hidden="true">*</span></label><input id="dlIdent" maxlength="160" required autocomplete="email" placeholder="nombre@uvp.mx"></div>
+          </div>
+          <div class="hp" aria-hidden="true"><label for="dlWebsite">No llenar</label><input id="dlWebsite" tabindex="-1" autocomplete="off"></div>
+          <div class="dialog-actions"><button class="button button-primary" type="submit" id="dlSubmit">Consultar y descargar</button></div>
+        </form>
+        <div id="dlResult"></div>
+        <p class="form-status" id="dlStatus" role="status" aria-live="polite"></p>
+      </section>
+    </div>
+  </dialog>
+
+  <!-- Verificación pública de folios -->
+  <dialog id="verifyDialog" aria-labelledby="verifyTitle">
+    <div class="dialog-hero">
+      <h3 id="verifyTitle">Verificar una constancia</h3>
+      <p>Escribe el folio impreso en la esquina inferior derecha de la constancia.</p>
+      <button class="dialog-close" type="button" data-close aria-label="Cerrar">×</button>
+    </div>
+    <div class="dialog-body">
+      <form id="verifyForm" novalidate>
+        <div class="field"><label for="verifyFolio">Folio</label><input id="verifyFolio" maxlength="40" autocomplete="off" style="text-transform:uppercase" placeholder="JFSD27-XXXXXXXX"></div>
+        <div class="dialog-actions"><button class="button button-plum" type="submit">Verificar</button></div>
+      </form>
+      <div id="verifyResult" aria-live="polite" style="margin-top:16px"></div>
+    </div>
+  </dialog>
+
+  <iframe id="apiFrame" name="apps-script-response" title="Respuesta del servidor" hidden></iframe>
+  <form id="apiForm" target="apps-script-response" method="post" hidden></form>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script>
+    "use strict";
+    // URL de la implementación web de Apps Script (ver LEEME.md, paso 3).
+    const API_URL = "https://script.google.com/macros/s/AKfycbyMCPo_hYISLM5Zq-03THmD6D9MJt-DevTKrKXyD9DiMjs4wCat0yKILVdEtZ-HmWFy/exec";
+    const MIN_COURSES = 3;
+    const STATS_REFRESH_MS = 20000;
+    const UVP_EMAIL = /^[^\s@]+@([a-z0-9-]+\.)*uvp\.mx$/i;
+    // Cursos especializados del carrusel (orden del documento de requerimientos).
+    const FEATURED = ["E2V", "E3V", "E4V", "E8V", "E6P", "PS4P"];
+    // Niveles del Teocali sobre la imagen 3D (coordenadas de la imagen de 824 × 588). Distribución preliminar.
+    const TEOCALLI_LEVELS = [
+      { id: "n0", name: "Primer nivel", sub: "Nivel 0", y: 410, h: 110 },
+      { id: "n1", name: "Segundo nivel", sub: "Nivel 1", y: 337, h: 73 },
+      { id: "lab", name: "Tercer nivel", sub: "Área de laboratorios", y: 262, h: 75 },
+      { id: "n300", name: "Siguiente nivel", sub: "Nivel 300 · por confirmar", y: 192, h: 70, pending: true }
+    ];
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const state = { catalog: null, stats: null, selected: new Set(), visibleCourses: 9, weekIndex: 0, weeks: [], level: "lab", validCode: null, slide: 0 };
+    const pending = new Map();
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => [...document.querySelectorAll(s)];
+    const escapeHtml = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const apiReady = () => API_URL && !API_URL.includes("PEGA_AQUI");
+    const uid = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`);
+    let sessionIndex = new Map(), courseIndex = new Map();
+
+    function showToast(message) {
+      const toast = $("#toast");
+      toast.hidden = true;
+      toast.textContent = message;
+      void toast.offsetWidth;
+      toast.hidden = false;
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => { toast.hidden = true; }, 5200);
+    }
+
+    function setOptions(select, values, placeholder) {
+      select.innerHTML = `<option value="">${escapeHtml(placeholder)}</option>` + values.map((v) => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join("");
+    }
+    function formatDate(iso, options = { day: "numeric", month: "long", year: "numeric" }) {
+      if (!iso || !/^\d{4}-\d{2}-\d{2}/.test(iso)) return "Autogestivo";
+      return new Intl.DateTimeFormat("es-MX", options).format(new Date(`${iso.slice(0, 10)}T12:00:00`));
+    }
+    const formatShortDate = (iso) => formatDate(iso, { weekday: "short", day: "numeric", month: "short" });
+    const ymd = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    function mondayOf(iso) { const d = new Date(`${iso}T12:00:00`); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return ymd(d); }
+    function addDays(iso, n) { const d = new Date(`${iso}T12:00:00`); d.setDate(d.getDate() + n); return ymd(d); }
+    function weekLabel(monday) {
+      const a = new Date(`${monday}T12:00:00`), b = new Date(`${addDays(monday, 6)}T12:00:00`);
+      const mes = (d) => new Intl.DateTimeFormat("es-MX", { month: "long" }).format(d);
+      return a.getMonth() === b.getMonth() ? `${a.getDate()} al ${b.getDate()} de ${mes(b)} de ${b.getFullYear()}` : `${a.getDate()} de ${mes(a)} al ${b.getDate()} de ${mes(b)} de ${b.getFullYear()}`;
+    }
+    const timeRange = (t) => String(t || "").replace("-", "–");
+    const cleanTitle = (t) => String(t || "").replace(/\s*\((solicitud|aula m[oó]vil)[^)]*\)/gi, "").trim();
+    function roomLabel(s) {
+      if (s.modality === "Virtual") return "En línea (Zoom)";
+      if (!s.date) return "Plataforma UVP Online";
+      return s.room || "Sede por confirmar";
+    }
+    function remainingFor(id) {
+      const s = sessionIndex.get(id);
+      if (!s) return 0;
+      const used = state.stats?.bySession?.[id]?.inscritos || 0;
+      return Math.max(0, s.capacity - used);
+    }
+    const occupancy = (id) => { const s = sessionIndex.get(id); return s ? Math.min(100, Math.round(((s.capacity - remainingFor(id)) / s.capacity) * 100)) : 0; };
+    const seatsText = (n) => n === 0 ? "Cupo completo" : `${n} ${n === 1 ? "lugar disponible" : "lugares disponibles"}`;
+
+    /* ---------- Inicialización ---------- */
+    function initializePage() {
+      const c = state.catalog;
+      sessionIndex = new Map(c.sessions.map((s) => [s.id, s]));
+      courseIndex = new Map(c.courses.map((x) => [x.id, x]));
+      $("#eventDates").textContent = `${formatDate(c.event.startDate)} — ${formatDate(c.event.endDate)}`;
+      setOptions($("#campus"), c.options.campuses, "Selecciona un plantel");
+      setOptions($("#division"), c.options.divisions, "Selecciona una división o área");
+      setOptions($("#personType"), c.options.personTypes, "Selecciona una opción");
+      setOptions($("#experience"), c.options.experience, "Selecciona tu antigüedad");
+      $("#academicLevels").innerHTML = c.options.academicLevels.map((lvl) =>
+        `<label class="check"><input type="checkbox" name="academicLevel" value="${escapeHtml(lvl)}"><span>${escapeHtml(lvl.replace(/\s*\(pasa[r]? a [^)]*\)/i, ""))}</span></label>`).join("");
+      setOptions($("#postgraduateLevel"), c.options.postgraduateLevels, "Selecciona un nivel de posgrado");
+      const axes = [...new Set(c.courses.map((x) => x.axis).filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
+      setOptions($("#axisFilter"), axes, "Todos los temas");
+      const facilitators = [...new Set(c.courses.map((x) => (x.facilitator || "").trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
+      setOptions($("#facilitatorFilter"), facilitators, "Todos los facilitadores");
+      renderTicker(axes);
+      buildWeeks();
+      renderCarousel();
+      renderAgenda();
+      renderCourses();
+      renderLevels();
+      renderFaqs();
+      updateSelection();
+      updatePrograms();
+      startCountdown();
+      loadLiveStats();
+      loadCertificateWindow();
+      setInterval(() => { if (!document.hidden) loadLiveStats(); }, STATS_REFRESH_MS);
+      document.addEventListener("visibilitychange", () => { if (!document.hidden) loadLiveStats(); });
+      setupReveal();
+      handleUrlParams();
+    }
+
+    function setupReveal() {
+      const items = $$(".reveal");
+      if (!("IntersectionObserver" in window)) { items.forEach((el) => el.classList.add("is-in")); return; }
+      const io = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } }), { threshold: 0.12 });
+      items.forEach((el) => io.observe(el));
+    }
+
+    /* ---------- Cuenta regresiva ---------- */
+    function startCountdown() {
+      const ev = state.catalog.event;
+      const start = new Date(`${ev.startDate}T09:00:00-06:00`);
+      const end = new Date(`${ev.endDate}T18:00:00-06:00`);
+      const box = $("#countdown");
+      const tick = () => {
+        const now = new Date();
+        if (now >= end) { box.innerHTML = `<p class="countdown-label">La jornada concluyó · descarga aquí tus constancias</p>`; return false; }
+        if (now >= start) { box.innerHTML = `<p class="countdown-label">La jornada está en curso</p>`; return false; }
+        let s = Math.floor((start - now) / 1000);
+        const d = Math.floor(s / 86400); s %= 86400;
+        const h = Math.floor(s / 3600); s %= 3600;
+        const m = Math.floor(s / 60); s %= 60;
+        const unit = (n, l) => `<div class="unit"><strong>${String(n).padStart(2, "0")}</strong><small>${l}</small></div>`;
+        box.innerHTML = `<p class="countdown-label">Faltan</p>${unit(d, d === 1 ? "día" : "días")}${unit(h, "horas")}${unit(m, "min")}${unit(s, "seg")}`;
+        return true;
+      };
+      if (tick()) setInterval(tick, 1000);
+    }
+
+    /* ---------- Cinta de temas ---------- */
+    function renderTicker(axes) {
+      const words = [...axes, "Presencial", "Virtual", "Autogestivo", "Complejo Teocalli"];
+      const html = words.map((w) => `<span>${escapeHtml(w)}</span>`).join("");
+      $("#tickerTrack").innerHTML = html + html;
+    }
+
+    /* ---------- Carrusel ---------- */
+    function courseSeats(course) {
+      const ids = course.sessions || [];
+      const cap = ids.reduce((a, id) => a + (sessionIndex.get(id)?.capacity || 0), 0);
+      const left = ids.reduce((a, id) => a + remainingFor(id), 0);
+      return { cap, left, pct: cap ? Math.round(((cap - left) / cap) * 100) : 0 };
+    }
+
+    function renderCarousel() {
+      const slides = FEATURED.map((id) => courseIndex.get(id)).filter(Boolean);
+      $("#carousel").innerHTML = slides.map((course, i) => {
+        const seats = courseSeats(course);
+        return `<article class="slide glare" data-tilt data-course="${escapeHtml(course.id)}" aria-roledescription="diapositiva" aria-label="${i + 1} de ${slides.length}">
+          <span class="orb" aria-hidden="true"></span>
+          <span class="slide-tag">${escapeHtml(course.axis)}</span>
+          <h3>${escapeHtml(cleanTitle(course.title))}</h3>
+          <p>${escapeHtml(course.pitch || course.objective || "")}</p>
+          <div class="slide-seats"><div class="bar"><i style="--w:${seats.pct}%"></i></div><small data-seats-course="${escapeHtml(course.id)}">${seats.cap ? seatsText(seats.left) : "Inscripción abierta"}</small></div>
+          <div class="slide-foot">
+            <span>${escapeHtml(course.duration ? `${course.duration} horas` : "Autogestivo")} · ${escapeHtml(course.modality || "")}</span>
+            <button type="button" data-find="${escapeHtml(course.id)}">Ver en la oferta</button>
+          </div>
+        </article>`;
+      }).join("");
+      $("#carouselDots").innerHTML = slides.map((c, i) => `<button type="button" aria-label="Ir al curso ${i + 1}" data-dot="${i}" aria-current="${i === 0}"></button>`).join("");
+    }
+
+    function updateCarouselSeats() {
+      $$("#carousel .slide").forEach((slide) => {
+        const course = courseIndex.get(slide.dataset.course);
+        if (!course) return;
+        const seats = courseSeats(course);
+        slide.querySelector(".bar i").style.setProperty("--w", `${seats.pct}%`);
+        slide.querySelector("[data-seats-course]").textContent = seats.cap ? seatsText(seats.left) : "Inscripción abierta";
+      });
+    }
+
+    function slideStep() { const first = $("#carousel .slide"); return first ? first.getBoundingClientRect().width + 20 : 360; }
+    function goToSlide(i) {
+      const track = $("#carousel");
+      const n = track.children.length;
+      if (!n) return;
+      state.slide = (i + n) % n;
+      track.scrollTo({ left: state.slide * slideStep(), behavior: reduceMotion ? "auto" : "smooth" });
+    }
+    function syncDots() {
+      const track = $("#carousel");
+      const i = Math.round(track.scrollLeft / slideStep());
+      state.slide = i;
+      $$("#carouselDots button").forEach((b, k) => b.setAttribute("aria-current", String(k === i)));
+    }
+    function setupCarouselMotion() {
+      const track = $("#carousel");
+      let paused = false, timer = null;
+      const play = () => { clearInterval(timer); if (!reduceMotion) timer = setInterval(() => { if (!paused && !document.hidden) { const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 8; goToSlide(atEnd ? 0 : state.slide + 1); } }, 5200); };
+      ["pointerenter", "focusin"].forEach((ev) => track.addEventListener(ev, () => { paused = true; }));
+      ["pointerleave", "focusout"].forEach((ev) => track.addEventListener(ev, () => { paused = false; }));
+      track.addEventListener("scroll", () => { clearTimeout(track._t); track._t = setTimeout(syncDots, 80); }, { passive: true });
+      // Arrastre con el mouse
+      let down = false, startX = 0, startLeft = 0, moved = false;
+      track.addEventListener("pointerdown", (e) => { if (e.pointerType !== "mouse") return; down = true; moved = false; startX = e.clientX; startLeft = track.scrollLeft; });
+      window.addEventListener("pointermove", (e) => { if (!down) return; const dx = e.clientX - startX; if (Math.abs(dx) > 5) { moved = true; track.classList.add("is-dragging"); } track.scrollLeft = startLeft - dx; });
+      window.addEventListener("pointerup", () => { if (!down) return; down = false; track.classList.remove("is-dragging"); if (moved) { syncDots(); goToSlide(state.slide); } });
+      track.addEventListener("keydown", (e) => { if (e.key === "ArrowRight") { e.preventDefault(); goToSlide(state.slide + 1); } if (e.key === "ArrowLeft") { e.preventDefault(); goToSlide(state.slide - 1); } });
+      play();
+    }
+
+    /* ---------- Agenda semanal ---------- */
+    function buildWeeks() {
+      const mondays = [...new Set(state.catalog.sessions.filter((s) => s.date).map((s) => mondayOf(s.date)))].sort();
+      state.weeks = mondays;
+      const today = ymd(new Date());
+      const current = mondays.findIndex((m) => addDays(m, 6) >= today);
+      state.weekIndex = current >= 0 ? current : 0;
+      $("#weekChips").innerHTML = mondays.map((m, i) => `<button class="chip" type="button" data-week="${i}" aria-pressed="${i === state.weekIndex}">Semana ${i + 1}</button>`).join("");
+    }
+
+    function renderAgenda(direction = 0) {
+      const monday = state.weeks[state.weekIndex];
+      const grid = $("#weekGrid");
+      if (!monday) { grid.innerHTML = `<div class="empty-note">La agenda no está disponible en este momento.</div>`; return; }
+      $("#weekLabel").textContent = weekLabel(monday);
+      $("#weekPrev").disabled = state.weekIndex === 0;
+      $("#weekNext").disabled = state.weekIndex === state.weeks.length - 1;
+      $$("#weekChips .chip").forEach((chip) => chip.setAttribute("aria-pressed", String(Number(chip.dataset.week) === state.weekIndex)));
+      const today = ymd(new Date());
+      const sessions = state.catalog.sessions.filter((s) => s.date);
+      let total = 0;
+      grid.innerHTML = [0, 1, 2, 3, 4, 5, 6].map((offset) => {
+        const iso = addDays(monday, offset);
+        const items = sessions.filter((s) => s.date === iso).sort((a, b) => a.block - b.block || a.time.localeCompare(b.time));
+        total += items.length;
+        const head = `<div class="day-head"><small>${escapeHtml(formatDate(iso, { weekday: "long" }))}</small><strong>${new Date(`${iso}T12:00:00`).getDate()} de ${escapeHtml(formatDate(iso, { month: "long" }))}</strong></div>`;
+        const body = items.length ? items.map((s) => {
+          const left = remainingFor(s.id);
+          const mine = state.selected.has(s.id);
+          const full = left === 0 && !mine;
+          return `<article class="slot ${s.modality === "Virtual" ? "is-virtual" : "is-presencial"} ${mine ? "is-mine" : ""}">
+            <span class="slot-time">${escapeHtml(timeRange(s.time))} h · Bloque ${s.block}</span>
+            <span class="slot-title">${escapeHtml(cleanTitle(s.title))}</span>
+            <span class="slot-meta">${escapeHtml(s.modality)} · ${escapeHtml(roomLabel(s))}</span>
+            <span class="slot-meta">${escapeHtml(s.facilitator || "Facilitador por confirmar")}</span>
+            <div class="slot-foot"><span class="slot-seats ${left > 0 && left <= 5 ? "low" : ""}">${escapeHtml(seatsText(left))}</span>
+            <button class="slot-add" type="button" data-toggle-session="${escapeHtml(s.id)}" aria-pressed="${mine}" ${full ? "disabled" : ""}>${mine ? "En mi plan ✓" : (full ? "Sin lugar" : "Agregar")}</button></div>
+          </article>`;
+        }).join("") : `<p class="day-empty">Sin actividades programadas</p>`;
+        return `<section class="day ${items.length ? "" : "is-empty"} ${iso === today ? "is-today" : ""}" aria-label="${escapeHtml(formatDate(iso, { weekday: "long", day: "numeric", month: "long" }))}">${head}<div class="day-body">${body}</div></section>`;
+      }).join("");
+      if (direction && !reduceMotion) { grid.classList.remove("swap"); grid.style.setProperty("--dir", `${direction * 30}px`); void grid.offsetWidth; grid.classList.add("swap"); }
+      $("#agendaCount").textContent = `${total} ${total === 1 ? "sesión programada" : "sesiones programadas"} esta semana`;
+    }
+
+    /* ---------- Oferta ---------- */
+    function sessionLabel(s) {
+      if (!s.date) return "Autogestivo · Plataforma UVP Online";
+      return `${formatShortDate(s.date)} · ${timeRange(s.time)} h · ${roomLabel(s)}`;
+    }
+    const filtersActive = () => Boolean(state.roomFilter) || ["#courseSearch", "#axisFilter", "#modeFilter", "#typeFilter", "#facilitatorFilter"].some((s) => $(s).value.trim());
+
+    function renderCourses() {
+      const search = $("#courseSearch").value.trim().toLocaleLowerCase("es-MX");
+      const axis = $("#axisFilter").value, mode = $("#modeFilter").value, type = $("#typeFilter").value, facilitator = $("#facilitatorFilter").value;
+      const filtered = state.catalog.courses.filter((c) => {
+        const text = [c.title, c.axis, c.facilitator, c.pitch].join(" ").toLocaleLowerCase("es-MX");
+        return (!axis || c.axis === axis) && (!mode || c.modality === mode) && (!type || (c.type || "Curso") === type) &&
+          (!facilitator || (c.facilitator || "").trim() === facilitator) && (!search || text.includes(search)) &&
+          (!state.roomFilter || (c.sessions || []).some((id) => (sessionIndex.get(id)?.room || "").includes(state.roomFilter)));
+      });
+      const visible = filtered.slice(0, state.visibleCourses);
+      $("#courseGrid").innerHTML = visible.length ? visible.map((course, i) => {
+        const modeClass = course.modality === "Presencial" ? "orange" : (course.modality === "Virtual" ? "" : "green");
+        const pitch = course.pitch || course.objective || "Conoce esta propuesta formativa de la jornada.";
+        const options = (course.sessions || []).length ? course.sessions.map((id) => {
+          const s = sessionIndex.get(id);
+          if (!s) return "";
+          const left = remainingFor(id), checked = state.selected.has(id), full = left === 0 && !checked;
+          return `<label class="session-option ${full ? "is-full" : ""}"><input type="checkbox" data-session="${escapeHtml(id)}" ${checked ? "checked" : ""} ${full ? "disabled" : ""}><span>${escapeHtml(sessionLabel(s))}<small>${escapeHtml(seatsText(left))}</small><span class="seatbar" aria-hidden="true"><i style="--w:${occupancy(id)}%"></i></span></span></label>`;
+        }).join("") : `<span class="hint">Horario por confirmar. Pronto tendrá fecha y aula.</span>`;
+        const content = course.content ? `<ul>${course.content.split(/\s*[*•]\s+|\n+/).map((x) => x.trim()).filter(Boolean).map((x) => `<li>${escapeHtml(x)}</li>`).join("")}</ul>` : "";
+        const duration = course.duration ? `<span class="duration" title="Duración"><strong>${escapeHtml(course.duration)}</strong><span>${Number(course.duration) === 1 ? "hora" : "horas"}</span></span>` : `<span class="pill">Autogestivo</span>`;
+        return `<article class="course-card glare on-light" data-tilt style="--i:${i % 9}">
+          <div class="course-top"><span class="pill ${modeClass}">${escapeHtml(course.modality || "Modalidad por confirmar")}</span>${duration}</div>
+          <span class="course-axis">${escapeHtml(course.axis || "")}</span>
+          <h3>${escapeHtml(cleanTitle(course.title))}</h3>
+          <p class="course-pitch">${escapeHtml(pitch)}</p>
+          ${course.facilitator ? `<p class="course-facilitator"><strong>Facilita:</strong> ${escapeHtml(course.facilitator)}</p>` : ""}
+          <div class="session-options">${options}</div>
+          <details class="course-more"><summary>Objetivo, temas y acreditación</summary>${course.objective ? `<p><strong>Objetivo:</strong> ${escapeHtml(course.objective)}</p>` : ""}${content}${course.accreditation ? `<p><strong>Acreditación:</strong> ${escapeHtml(String(course.accreditation).replace(/\*\s*/g, "· ").replace(/^·\s*/, ""))}</p>` : ""}</details>
+        </article>`;
+      }).join("") : `<div class="empty-note">No encontramos cursos con esos filtros. Prueba con otra búsqueda.</div>`;
+      $("#catalogCount").innerHTML = filtersActive() ? `${filtered.length} ${filtered.length === 1 ? "curso coincide" : "cursos coinciden"} con tu búsqueda${state.roomFilter ? ` · sesiones en ${escapeHtml(state.roomFilter)}` : ""} <button type="button" id="clearFilters">Limpiar filtros</button>` : "";
+      $("#loadMore").hidden = visible.length >= filtered.length;
+    }
+
+    /* Actualiza solo cupos y estados sin reconstruir la oferta (no se pierde lo que el usuario está viendo). */
+    function refreshSeatViews() {
+      $$("#courseGrid input[data-session]").forEach((input) => {
+        const id = input.dataset.session, left = remainingFor(id), checked = state.selected.has(id), full = left === 0 && !checked;
+        const label = input.closest(".session-option");
+        input.checked = checked;
+        input.disabled = full;
+        label.classList.toggle("is-full", full);
+        label.querySelector("small").textContent = seatsText(left);
+        label.querySelector(".seatbar i").style.setProperty("--w", `${occupancy(id)}%`);
+      });
+      renderAgenda();
+      updateCarouselSeats();
+    }
+
+    /* ---------- Mapa Teocali ---------- */
+    function teocalliRooms() {
+      const rooms = new Map();
+      state.catalog.sessions.forEach((s) => {
+        if (!s.room || !s.date || /zoom|en línea|plataforma/i.test(s.room)) return;
+        const name = s.room.replace(/\s*\(.*?\)\s*/g, "").replace(/\s*Complejo Teocalli/i, "").trim();
+        rooms.set(name, (rooms.get(name) || 0) + 1);
+      });
+      return [...rooms.entries()].sort((a, b) => a[0].localeCompare(b[0], "es"));
+    }
+
+    function renderLevels() {
+      const svg = $("#mapOverlay");
+      svg.innerHTML = `<defs><linearGradient id="floorGlow" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="rgba(246,198,70,.55)"/><stop offset=".5" stop-color="rgba(242,123,53,.4)"/><stop offset="1" stop-color="rgba(196,29,101,.5)"/></linearGradient></defs>` +
+        TEOCALLI_LEVELS.map((l) => `<g class="floor ${l.pending ? "is-pending" : ""}" data-level="${l.id}" tabindex="0" role="button" aria-label="${escapeHtml(`${l.name}: ${l.sub}`)}"><rect x="100" y="${l.y}" width="605" height="${l.h}" rx="8"/><text x="120" y="${l.y + l.h / 2 + 8}">${escapeHtml(l.sub)}</text></g>`).join("");
+      $("#levelButtons").innerHTML = [...TEOCALLI_LEVELS].reverse().map((l) => `<button type="button" data-level="${l.id}" aria-pressed="false">${escapeHtml(l.name)}<small>${escapeHtml(l.sub.replace(" · por confirmar", "*"))}</small></button>`).join("");
+      selectLevel(state.level);
+    }
+
+    function selectLevel(id) {
+      state.level = id;
+      $$("#mapOverlay .floor").forEach((g) => g.classList.toggle("is-active", g.dataset.level === id));
+      $$("#levelButtons button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.level === id)));
+      const level = TEOCALLI_LEVELS.find((l) => l.id === id) || TEOCALLI_LEVELS[2];
+      const rooms = teocalliRooms();
+      const labs = rooms.filter(([r]) => /lab/i.test(r)), others = rooms.filter(([r]) => !/lab/i.test(r));
+      const list = (arr) => `<ul class="room-list">${arr.map(([r, n]) => `<li><span>${escapeHtml(r)}</span><button type="button" data-room="${escapeHtml(r)}">${n} ${n === 1 ? "sesión" : "sesiones"} →</button></li>`).join("") || `<li><span>Sin espacios asignados</span></li>`}</ul>`;
+      let body;
+      if (id === "lab") body = `<p>En la distribución preliminar, el tercer nivel concentra las áreas de laboratorio.</p>${list(labs)}`;
+      else if (id === "n300") body = `<p>Este nivel está pendiente de confirmar con la información oficial del edificio.</p><div class="room-note">Por el momento no se asigna ningún espacio a este nivel.</div>`;
+      else body = `<p>La asignación de cada aula a este nivel se confirmará con la nomenclatura oficial del edificio.</p><div class="room-note"><strong>Espacios presenciales de la jornada (por ubicar):</strong></div>${list(others)}`;
+      const panel = $("#levelPanel");
+      panel.innerHTML = `<span class="kicker">${escapeHtml(level.name)}</span><h3>${escapeHtml(level.sub)}</h3>${body}`;
+      if (!reduceMotion) { panel.classList.remove("swap"); void panel.offsetWidth; panel.classList.add("swap"); }
+    }
+
+    /* ---------- Preguntas ---------- */
+    function renderFaqs() {
+      $("#faqList").innerHTML = state.catalog.faqs.map((f, i) => `<details class="reveal" style="--d:${i % 4}"><summary>${escapeHtml(f.question)}</summary><p>${escapeHtml(f.answer)}</p></details>`).join("");
+    }
+
+    /* ---------- Selección (sincronizada en agenda, oferta, carrusel y formulario) ---------- */
+    function toggleSession(id, on) {
+      if (on) {
+        if (remainingFor(id) === 0) { showToast("Esa sesión ya no tiene lugares disponibles."); return false; }
+        if (hasScheduleConflict(id)) { showToast("Ese horario coincide con otra sesión que ya elegiste."); return false; }
+        state.selected.add(id);
+      } else state.selected.delete(id);
+      updateSelection();
+      refreshSeatViews();
+      return true;
+    }
+
+    function updateSelection() {
+      const ids = [...state.selected];
+      $("#selectionCount").textContent = `${ids.length} ${ids.length === 1 ? "sesión seleccionada" : "sesiones seleccionadas"}`;
+      $("#selectionHint").textContent = ids.length >= MIN_COURSES ? "Ya cumples el mínimo. Continúa con tus datos." : `Te ${MIN_COURSES - ids.length === 1 ? "falta 1 sesión" : `faltan ${MIN_COURSES - ids.length} sesiones`} para el mínimo de tres.`;
+      $$("#selectionMeter i").forEach((el, i) => el.classList.toggle("on", i < ids.length));
+      updateStripVisibility();
+      $("#selectedList").innerHTML = ids.length ? ids.map((id) => {
+        const s = sessionIndex.get(id);
+        if (!s) return "";
+        return `<div class="selected-row"><div><strong>${escapeHtml(cleanTitle(s.title))}</strong><span>${escapeHtml(sessionLabel(s))}</span></div><button class="remove-selection" type="button" data-remove-session="${escapeHtml(id)}" aria-label="Quitar ${escapeHtml(s.title)}">Quitar</button></div>`;
+      }).join("") : `<span class="hint">Aún no has agregado sesiones. Elígelas desde la agenda o la oferta académica.</span>`;
+    }
+
+    let regVisible = false;
+    function updateStripVisibility() { $("#selectionStrip").classList.toggle("is-away", state.selected.size === 0 || regVisible); }
+
+    function hasScheduleConflict(id) {
+      const c = sessionIndex.get(id);
+      if (!c?.date || !c.block) return false;
+      return [...state.selected].some((x) => { const s = sessionIndex.get(x); return s && s.id !== id && s.date === c.date && s.block === c.block; });
+    }
+
+    const selectedLevels = () => $$('input[name="academicLevel"]:checked').map((i) => i.value);
+
+    function updatePrograms() {
+      const levels = selectedLevels(), o = state.catalog.options;
+      const hasUnder = levels.some((l) => l.startsWith("Licenciatura")), hasPost = levels.some((l) => l.startsWith("Posgrado"));
+      const sub = $("#postgraduateLevel").value;
+      $("#postgraduateField").hidden = !hasPost;
+      $("#postgraduateLevel").required = hasPost;
+      if (!hasPost) $("#postgraduateLevel").value = "";
+      let list = [];
+      if (hasUnder) list = list.concat(o.undergraduatePrograms);
+      if (hasPost) {
+        if (sub.startsWith("Maestría")) list = list.concat(o.masters);
+        else if (sub.startsWith("Doctorado")) list = list.concat(o.doctorates);
+        else if (sub.startsWith("Las dos")) list = list.concat(o.postgraduateOptions);
+      }
+      list = [...new Set(list)];
+      const box = $("#programs");
+      const current = new Set($$("#programs input:checked").map((i) => i.value));
+      box.innerHTML = list.map((v) => `<label class="check"><input type="checkbox" value="${escapeHtml(v)}" ${current.has(v) ? "checked" : ""}><span>${escapeHtml(v)}</span></label>`).join("");
+      $("#programField").hidden = list.length === 0;
+      filterPrograms();
+    }
+    function filterPrograms() {
+      const q = $("#programFilter").value.trim().toLocaleLowerCase("es-MX");
+      $$("#programs .check").forEach((el) => { el.hidden = q && !el.textContent.toLocaleLowerCase("es-MX").includes(q); });
+    }
+
+    function setFormStatus(message, kind = "") { const s = $("#formStatus"); s.textContent = message; s.className = `form-status ${kind}`; }
+
+    function markInvalid(el, message) {
+      el.setAttribute("aria-invalid", "true");
+      el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+      el.focus({ preventScroll: true });
+      setFormStatus(message, "error");
+      return false;
+    }
+
+    function validateRegistration() {
+      $$("#registrationForm [aria-invalid]").forEach((el) => el.removeAttribute("aria-invalid"));
+      const req = [["#fullName", "Escribe tu nombre completo."], ["#email", "Escribe tu correo institucional."], ["#teacherKey", "Escribe tu clave docente o administrativa."],
+        ["#campus", "Elige tu plantel."], ["#division", "Elige tu división o área."], ["#personType", "Indica cómo te identificas."]];
+      for (const [sel, msg] of req) if (!$(sel).value.trim()) return markInvalid($(sel), msg);
+      if (!UVP_EMAIL.test($("#email").value.trim())) return markInvalid($("#email"), "Escribe tu correo institucional (terminación @uvp.mx).");
+      if (!selectedLevels().length) { $("#academicLevels").scrollIntoView({ behavior: "smooth", block: "center" }); setFormStatus("Elige al menos un nivel educativo en el que impartes clases.", "error"); return false; }
+      if ($("#postgraduateLevel").required && !$("#postgraduateLevel").value) return markInvalid($("#postgraduateLevel"), "Elige el nivel de posgrado.");
+      if (!$("#experience").value) return markInvalid($("#experience"), "Elige tu antigüedad en UVP.");
+      if (state.selected.size < MIN_COURSES) { $("#selectedList").scrollIntoView({ behavior: "smooth", block: "center" }); setFormStatus(`Selecciona al menos ${MIN_COURSES} sesiones antes de confirmar.`, "error"); return false; }
+      if (!$("#privacyConsent").checked) return markInvalid($("#privacyConsent"), "Acepta el aviso de uso de datos para continuar.");
+      return true;
+    }
+
+    function submitRegistration(event) {
+      event.preventDefault();
+      if (!validateRegistration()) return;
+      if (!apiReady()) { setFormStatus("El formulario aún no está conectado al registro. La coordinación debe completar la configuración indicada en LEEME.md.", "error"); return; }
+      setFormStatus("");
+      $("#noticeDialog").showModal();
+    }
+
+    function confirmRegistration() {
+      $("#noticeDialog").close();
+      const payload = {
+        requestId: uid(),
+        fullName: $("#fullName").value.trim(), email: $("#email").value.trim(), teacherKey: $("#teacherKey").value.trim(),
+        campus: $("#campus").value, division: $("#division").value, personType: $("#personType").value,
+        academicLevel: selectedLevels().join(" | ") || "No aplica", postgraduateLevel: $("#postgraduateLevel").value || "No aplica",
+        programs: $$("#programs input:checked").map((i) => i.value), experience: $("#experience").value,
+        sessions: [...state.selected], website: $("#website").value, privacyConsent: $("#privacyConsent").checked
+      };
+      const btn = $("#submitButton");
+      btn.disabled = true;
+      btn.firstChild.textContent = "Enviando inscripción… ";
+      setFormStatus("Enviando tu inscripción de forma segura…", "pending");
+      sendToScript(payload, 35000, (result) => {
+        btn.disabled = false;
+        btn.firstChild.textContent = "Confirmar inscripción ";
+        if (result.stats) applyStats(result.stats);
+        if (result.ok) {
+          setFormStatus(result.message || "Tu inscripción quedó registrada. Revisa tu correo.", "success");
+          showToast("Inscripción registrada. Revisa tu correo institucional.");
+          state.selected.clear();
+          updateSelection();
+          refreshSeatViews();
+        } else {
+          (result.full || []).forEach((id) => state.selected.delete(id));
+          updateSelection();
+          refreshSeatViews();
+          setFormStatus(result.message || "No fue posible guardar la inscripción. Revisa tus datos e inténtalo de nuevo.", "error");
+        }
+      }, () => {
+        btn.disabled = false;
+        btn.firstChild.textContent = "Reintentar inscripción ";
+        setFormStatus("No recibimos confirmación del servidor. Revisa tu conexión y vuelve a intentarlo: si ya se había guardado, no se duplicará.", "error");
+        loadLiveStats();
+      });
+    }
+
+    /* Envío por iframe (POST) y respuesta por postMessage; ver LEEME.md. */
+    function sendToScript(payload, timeoutMs, onResult, onTimeout) {
+      payload.origin = location.origin;
+      const timer = setTimeout(() => { pending.delete(payload.requestId); onTimeout(); }, timeoutMs);
+      pending.set(payload.requestId, { onResult, timer });
+      const form = $("#apiForm");
+      const input = document.createElement("input");
+      input.type = "hidden"; input.name = "payload"; input.value = JSON.stringify(payload);
+      form.replaceChildren(input);
+      form.action = API_URL;
+      form.submit();
+    }
+
+    window.addEventListener("message", (event) => {
+      const host = (() => { try { return new URL(event.origin).hostname; } catch { return ""; } })();
+      if (!(host === "script.google.com" || host.endsWith(".googleusercontent.com"))) return;
+      const r = event.data;
+      if (!r || !r.requestId || !/^uvp-(registration|constancia)-result$/.test(r.type || "")) return;
+      const item = pending.get(r.requestId);
+      if (!item) return;
+      clearTimeout(item.timer);
+      pending.delete(r.requestId);
+      item.onResult(r);
+    });
+
+    /* ---------- Consultas JSONP (sin datos personales en la URL) ---------- */
+    function jsonp(params, onData, onError) {
+      const cb = `uvpCb_${Date.now()}_${Math.floor(Math.random() * 1e5)}`;
+      const script = document.createElement("script");
+      const timeout = setTimeout(() => { cleanup(); onError(); }, 15000);
+      function cleanup() { delete window[cb]; script.remove(); clearTimeout(timeout); }
+      window[cb] = (data) => { cleanup(); onData(data); };
+      script.onerror = () => { cleanup(); onError(); };
+      script.src = `${API_URL}?${new URLSearchParams({ ...params, callback: cb, t: Date.now() })}`;
+      document.body.appendChild(script);
+    }
+
+    function animateNumber(el, to) {
+      const from = Number(el.dataset.value || 0);
+      el.dataset.value = to;
+      if (from === to) { el.textContent = to.toLocaleString("es-MX"); return; }
+      if (from && from !== to) { el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump"); }
+      if (reduceMotion) { el.textContent = to.toLocaleString("es-MX"); return; }
+      const t0 = performance.now(), dur = from ? 700 : 1400;
+      const step = (t) => { const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 4); el.textContent = Math.round(from + (to - from) * e).toLocaleString("es-MX"); if (p < 1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    }
+
+    function applyStats(result) {
+      state.stats = result;
+      const total = Number(result.totalInscritos || 0), seats = Number(result.cuposDisponibles || 0), cap = Number(result.cuposProgramados || 0) || 1;
+      animateNumber($("#registeredCount"), total);
+      animateNumber($("#seatsAvailable"), seats);
+      animateNumber($("#badgeInscritos"), total);
+      animateNumber($("#badgeSeats"), seats);
+      $("#ringSeats").style.setProperty("--v", Math.round((seats / cap) * 100));
+      $("#ringInscritos").style.setProperty("--v", Math.min(100, Math.round(((cap - seats) / cap) * 100)));
+      $("#connectionState").textContent = "Actualizado en vivo";
+      $("#connectionState").classList.add("is-on");
+      $("#seatsCaption").classList.add("is-on");
+      refreshSeatViews();
+    }
+
+    function loadLiveStats() {
+      if (!apiReady()) { $("#connectionState").textContent = "Conexión pendiente de configurar"; return; }
+      jsonp({ action: "stats" }, (r) => {
+        if (!r || !r.ok) { $("#connectionState").textContent = "Contador no disponible"; return; }
+        applyStats(r);
+      }, () => { $("#connectionState").textContent = "Reintentando conexión…"; $("#connectionState").classList.remove("is-on"); });
+    }
+
+    /* ---------- Constancias ---------- */
+    function loadCertificateWindow() {
+      if (!apiReady()) { $("#certNote").textContent = "Descarga disponible próximamente."; return; }
+      jsonp({ action: "config" }, (r) => {
+        const open = Boolean(r && r.ok && r.abierto);
+        $("#openCertificate").disabled = !open;
+        $("#certNote").textContent = open ? "El registro y la descarga de constancias están abiertos." : "Disponible durante el periodo de registro de constancias. Consulta la fecha de apertura con coordinación.";
+        if (open && state.pendingCertOpen) { openCertDialog(state.pendingCertOpen.tab, state.pendingCertOpen.code); state.pendingCertOpen = null; }
+      }, () => { $("#certNote").textContent = "No fue posible consultar el periodo de constancias."; });
+    }
+
+    function openCertDialog(tab = "registro", code = "") {
+      resetCertDialog();
+      selectCertTab(tab);
+      if (code) { $("#accessCode").value = code; $("#dlCode").value = code; }
+      $("#certDialog").showModal();
+      if (code && tab === "registro") validateAccessCode();
+    }
+
+    function setStep(n) {
+      $$("#certStepper li").forEach((li) => { const s = Number(li.dataset.step); li.classList.toggle("is-on", s === n); li.classList.toggle("is-done", s < n); });
+    }
+
+    function resetCertDialog() {
+      ["#codigoForm", "#certForm", "#descargaForm"].forEach((s) => $(s).reset());
+      $("#codigoForm").hidden = false;
+      $("#codeSummary").hidden = true;
+      $("#certForm").hidden = true;
+      $("#certDone").hidden = true;
+      $("#dlResult").innerHTML = "";
+      setCertStatus($("#certStatus"), "");
+      setCertStatus($("#dlStatus"), "");
+      state.validCode = null;
+      setStep(1);
+    }
+
+    function selectCertTab(tab) {
+      const reg = tab === "registro";
+      $("#certTabs").dataset.active = tab;
+      $("#tabRegistroBtn").setAttribute("aria-selected", String(reg));
+      $("#tabDescargaBtn").setAttribute("aria-selected", String(!reg));
+      $("#panelRegistro").hidden = !reg;
+      $("#panelDescarga").hidden = reg;
+    }
+
+    function setCertStatus(el, message, kind) { el.textContent = message; el.className = `form-status ${kind || ""}`; }
+
+    function validateAccessCode(event) {
+      event?.preventDefault();
+      const code = $("#accessCode").value.trim().toUpperCase().replace(/\s+/g, "");
+      if (!code) { setCertStatus($("#certStatus"), "Escribe el código de acceso de tu curso.", "error"); $("#accessCode").focus(); return; }
+      setCertStatus($("#certStatus"), "Validando código…", "pending");
+      $("#validateCodeBtn").disabled = true;
+      jsonp({ action: "codigo", codigo: code }, (r) => {
+        $("#validateCodeBtn").disabled = false;
+        if (!r || !r.ok) { $("#codeSummary").hidden = true; $("#certForm").hidden = true; setCertStatus($("#certStatus"), r?.message || "No fue posible validar el código.", "error"); return; }
+        state.validCode = { ...r, codigo: code };
+        const fecha = r.autogestivo ? "Modalidad autogestiva · Plataforma UVP Online" : `${formatDate(r.fecha)} · ${timeRange(r.horario)} h`;
+        $("#codeSummary").innerHTML = `<span class="pill">${escapeHtml(r.horas)} ${Number(r.horas) === 1 ? "hora" : "horas"}</span><strong>${escapeHtml(cleanTitle(r.curso))}</strong><span>${escapeHtml(fecha)}</span>`;
+        $("#codeSummary").hidden = false;
+        $("#codigoForm").hidden = true;
+        $("#certForm").hidden = false;
+        setStep(2);
+        setCertStatus($("#certStatus"), "Código válido. Completa tus datos para registrar tu participación.", "success");
+        setTimeout(() => $("#certName").focus(), 50);
+      }, () => { $("#validateCodeBtn").disabled = false; setCertStatus($("#certStatus"), "No fue posible validar el código. Intenta de nuevo.", "error"); });
+    }
+
+    function submitCertRegistration(event) {
+      event.preventDefault();
+      if (!state.validCode) return;
+      const name = $("#certName").value.trim(), correo = $("#certEmail").value.trim(), clave = $("#certKey").value.trim();
+      if (name.split(/\s+/).length < 2) { setCertStatus($("#certStatus"), "Escribe tu nombre completo (nombre y apellidos).", "error"); $("#certName").focus(); return; }
+      if (!UVP_EMAIL.test(correo)) { setCertStatus($("#certStatus"), "Escribe tu correo institucional (terminación @uvp.mx).", "error"); $("#certEmail").focus(); return; }
+      if (!clave) { setCertStatus($("#certStatus"), "Escribe tu clave docente o administrativa.", "error"); $("#certKey").focus(); return; }
+      if (!$("#certConsent").checked) { setCertStatus($("#certStatus"), "Acepta el aviso de uso de datos para continuar.", "error"); return; }
+      if ($("#certWebsite").value.trim()) return;
+      const payload = { kind: "constancia", requestId: uid(), codigo: state.validCode.codigo, nombre: name, correo, clave, privacyConsent: true, website: "" };
+      $("#certSubmit").disabled = true;
+      setCertStatus($("#certStatus"), "Enviando tu registro…", "pending");
+      sendToScript(payload, 35000, (r) => {
+        $("#certSubmit").disabled = false;
+        if (!r.ok) { setCertStatus($("#certStatus"), r.message || "No fue posible registrar tu participación.", "error"); return; }
+        setCertStatus($("#certStatus"), "");
+        $("#certForm").hidden = true;
+        $("#codeSummary").hidden = true;
+        setStep(3);
+        $("#certDone").hidden = false;
+        $("#certDone").innerHTML = `<div class="success-box"><div class="check-circle"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+          <h4>${r.duplicado ? "Ya estabas registrado" : "Participación registrada"}</h4><p>${escapeHtml(r.message)}</p>
+          ${r.folio ? `<div class="folio">${escapeHtml(r.folio)}</div><p class="hint">Guarda este folio: identifica tu constancia.</p>` : ""}
+          ${statusTrack(r.estatus)}
+          <div class="dialog-actions" style="justify-content:center"><button class="button button-plum" type="button" data-goto-download>Consultar mi constancia</button></div></div>`;
+      }, () => { $("#certSubmit").disabled = false; setCertStatus($("#certStatus"), "No recibimos confirmación del servidor. Intenta de nuevo; tu registro no se duplicará.", "error"); });
+    }
+
+    function statusTrack(estatus) {
+      const steps = ["Registrada", "Validada", "Autorizada"];
+      const level = estatus === "Autorizada" ? 3 : estatus === "Asistencia y evaluación validadas" ? 2 : 1;
+      return `<div class="status-track" aria-label="Estatus: ${escapeHtml(estatus || "Pendiente")}">${steps.map((s, i) => `<div class="${i < level ? "on" : ""}">${s}</div>`).join("")}</div>`;
+    }
+
+    function submitCertLookup(event) {
+      event.preventDefault();
+      const clave = $("#dlKey").value.trim(), codigo = $("#dlCode").value.trim().toUpperCase().replace(/\s+/g, ""), ident = $("#dlIdent").value.trim();
+      if (!clave || !codigo || !ident) { setCertStatus($("#dlStatus"), "Completa tu clave, el código del curso y tu correo institucional.", "error"); return; }
+      const payload = { kind: "consultaConstancia", requestId: uid(), clave, codigo, identificador: ident, website: $("#dlWebsite").value };
+      $("#dlSubmit").disabled = true;
+      $("#dlResult").innerHTML = "";
+      setCertStatus($("#dlStatus"), "Consultando tu registro…", "pending");
+      sendToScript(payload, 35000, async (r) => {
+        $("#dlSubmit").disabled = false;
+        if (!r.ok) { setCertStatus($("#dlStatus"), r.message || "No fue posible consultar tu registro.", "error"); return; }
+        if (!r.constancia) { setCertStatus($("#dlStatus"), r.message, "pending"); $("#dlResult").innerHTML = statusTrack(r.estatus); return; }
+        $("#dlResult").innerHTML = statusTrack("Autorizada");
+        setCertStatus($("#dlStatus"), "Generando tu constancia…", "pending");
+        try {
+          await downloadCertificate(r.constancia);
+          setCertStatus($("#dlStatus"), `Tu constancia se descargó correctamente. Folio ${r.constancia.folio || ""}.`, "success");
+        } catch (error) {
+          console.error(error);
+          setCertStatus($("#dlStatus"), "No fue posible generar el archivo. Intenta de nuevo o escribe a coordinación.", "error");
+        }
+      }, () => { $("#dlSubmit").disabled = false; setCertStatus($("#dlStatus"), "No recibimos respuesta del servidor. Intenta de nuevo en unos minutos.", "error"); });
+    }
+
+    const loadedScripts = {};
+    function loadScript(src) {
+      if (!loadedScripts[src]) loadedScripts[src] = new Promise((resolve, reject) => {
+        const tag = document.createElement("script");
+        tag.src = src; tag.onload = resolve;
+        tag.onerror = () => { delete loadedScripts[src]; reject(new Error(`No se pudo cargar ${src}`)); };
+        document.head.appendChild(tag);
+      });
+      return loadedScripts[src];
+    }
+
+    async function downloadCertificate(data) {
+      await loadScript("https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js");
+      await loadScript("constancias/generador.js");
+      const plantilla = data.tipo === "TALLER" ? "constancias/plantilla-taller.pdf" : "constancias/plantilla-curso.pdf";
+      const bytes = await fetch(plantilla).then((res) => { if (!res.ok) throw new Error("Plantilla no disponible"); return res.arrayBuffer(); });
+      const verificarUrl = `${location.origin}${location.pathname.replace(/index\.html$/, "")}?verificar=`;
+      const pdf = await window.GeneradorConstancia.generarConstancia({ ...data, verificarUrl: verificarUrl.replace(/^https?:\/\//, "") + (data.folio || "") }, bytes);
+      const url = URL.createObjectURL(new Blob([pdf], { type: "application/pdf" }));
+      const slug = data.nombre.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-zA-Z0-9]+/g, "_").replace(/^_|_$/g, "");
+      const a = Object.assign(document.createElement("a"), { href: url, download: `Constancia_${slug || "UVP"}.pdf` });
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+    }
+
+    function verifyFolio(event) {
+      event?.preventDefault();
+      const folio = $("#verifyFolio").value.trim().toUpperCase();
+      const out = $("#verifyResult");
+      if (!folio) { out.innerHTML = `<p class="form-status error">Escribe el folio de la constancia.</p>`; return; }
+      if (!apiReady()) { out.innerHTML = `<p class="form-status error">La verificación aún no está conectada.</p>`; return; }
+      out.innerHTML = `<p class="form-status pending">Verificando…</p>`;
+      jsonp({ action: "verificar", folio }, (r) => {
+        if (r && r.ok && r.valida) {
+          out.innerHTML = `<div class="verify-ok"><strong>Constancia auténtica</strong><br>Emitida a <strong>${escapeHtml(r.nombre)}</strong> por <em>${escapeHtml(cleanTitle(r.curso))}</em> (${escapeHtml(r.horas)} h)${/^\d{4}/.test(r.fecha) ? `, ${escapeHtml(formatDate(r.fecha))}` : ""}. Folio ${escapeHtml(r.folio)}.</div>`;
+        } else out.innerHTML = `<div class="verify-bad">${escapeHtml(r?.message || "No existe una constancia autorizada con ese folio.")}</div>`;
+      }, () => { out.innerHTML = `<p class="form-status error">No fue posible verificar en este momento.</p>`; });
+    }
+
+    function openVerify(folio = "") {
+      $("#verifyForm").reset();
+      $("#verifyResult").innerHTML = "";
+      if (folio) $("#verifyFolio").value = folio;
+      $("#verifyDialog").showModal();
+      if (folio) verifyFolio();
+    }
+
+    /* Enlaces del QR del curso: ?constancia=CODIGO (y &descargar=1) · verificación: ?verificar=FOLIO */
+    function handleUrlParams() {
+      const p = new URLSearchParams(location.search);
+      const code = (p.get("constancia") || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 12);
+      const folio = (p.get("verificar") || "").toUpperCase().replace(/[^A-Z0-9-]/g, "").slice(0, 40);
+      if (code) { document.getElementById("constancias").scrollIntoView(); state.pendingCertOpen = { tab: p.get("descargar") ? "descarga" : "registro", code }; }
+      if (folio) openVerify(folio);
+    }
+
+    /* ---------- Efectos: inclinación 3D, reflejo, encabezado y progreso ---------- */
+    function setupTilt() {
+      if (!finePointer || reduceMotion) return;
+      let current = null;
+      document.addEventListener("pointermove", (e) => {
+        const el = e.target.closest?.("[data-tilt]");
+        if (current && current !== el) { current.style.transform = ""; current = null; }
+        if (!el) return;
+        current = el;
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        const max = el.classList.contains("slide") ? 6 : 4;
+        el.style.transform = `perspective(900px) rotateX(${(0.5 - y) * max}deg) rotateY(${(x - 0.5) * max}deg) translateY(-4px)`;
+        el.style.setProperty("--mx", `${x * 100}%`);
+        el.style.setProperty("--my", `${y * 100}%`);
+      }, { passive: true });
+      // El edificio del encabezado sigue suavemente al cursor
+      const hero = $("#inicio"), building = $("#building");
+      hero.addEventListener("pointermove", (e) => {
+        const r = hero.getBoundingClientRect();
+        building.style.setProperty("--ry", `${((e.clientX - r.left) / r.width - 0.5) * 16}deg`);
+        building.style.setProperty("--rx", `${(0.5 - (e.clientY - r.top) / r.height) * 10}deg`);
+      });
+      hero.addEventListener("pointerleave", () => { building.style.setProperty("--ry", "0deg"); building.style.setProperty("--rx", "0deg"); });
+    }
+
+    function setupScrollEffects() {
+      const bar = $("#progress"), top = $("#topbar"), toTop = $("#toTop");
+      let ticking = false;
+      const onScroll = () => {
+        const h = document.documentElement;
+        const p = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
+        bar.style.setProperty("--p", p.toFixed(4));
+        top.classList.toggle("is-scrolled", h.scrollTop > 20);
+        toTop.classList.toggle("is-on", h.scrollTop > 900);
+        ticking = false;
+      };
+      window.addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+      onScroll();
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver((entries) => entries.forEach((e) => { regVisible = e.isIntersecting; updateStripVisibility(); }), { threshold: 0.05 }).observe($("#inscripcion"));
+        const links = $$("[data-spy]");
+        const spy = new IntersectionObserver((entries) => entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const id = e.target.id === "agenda" || e.target.id === "oferta" ? "elige" : e.target.id;
+          links.forEach((a) => a.classList.toggle("is-current", a.dataset.spy === id));
+        }), { rootMargin: "-45% 0px -50% 0px" });
+        ["elige", "agenda", "oferta", "teocali", "preguntas", "inscripcion"].forEach((id) => spy.observe(document.getElementById(id)));
+      }
+    }
+
+    /* ---------- Eventos ---------- */
+    $("#menuToggle").addEventListener("click", () => {
+      const open = $("#menuToggle").getAttribute("aria-expanded") !== "true";
+      $("#menuToggle").setAttribute("aria-expanded", String(open));
+      $("#navLinks").classList.toggle("is-open", open);
+    });
+    $("#navLinks").addEventListener("click", (e) => { if (e.target.closest("a")) { $("#navLinks").classList.remove("is-open"); $("#menuToggle").setAttribute("aria-expanded", "false"); } });
+    $("#carouselPrev").addEventListener("click", () => goToSlide(state.slide - 1));
+    $("#carouselNext").addEventListener("click", () => goToSlide(state.slide + 1));
+    $("#carouselDots").addEventListener("click", (e) => { const b = e.target.closest("[data-dot]"); if (b) goToSlide(Number(b.dataset.dot)); });
+    $("#carousel").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-find]");
+      if (!b) return;
+      const course = courseIndex.get(b.dataset.find);
+      ["#axisFilter", "#modeFilter", "#typeFilter", "#facilitatorFilter"].forEach((s) => { $(s).value = ""; });
+      $("#courseSearch").value = cleanTitle(course?.title || "");
+      state.visibleCourses = 9;
+      renderCourses();
+      $("#oferta").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+    });
+    $("#weekPrev").addEventListener("click", () => { state.weekIndex = Math.max(0, state.weekIndex - 1); renderAgenda(-1); });
+    $("#weekNext").addEventListener("click", () => { state.weekIndex = Math.min(state.weeks.length - 1, state.weekIndex + 1); renderAgenda(1); });
+    $("#weekChips").addEventListener("click", (e) => { const c = e.target.closest("[data-week]"); if (!c) return; const n = Number(c.dataset.week); const dir = Math.sign(n - state.weekIndex); state.weekIndex = n; renderAgenda(dir); });
+    $("#weekGrid").addEventListener("click", (e) => { const b = e.target.closest("[data-toggle-session]"); if (b) toggleSession(b.dataset.toggleSession, b.getAttribute("aria-pressed") !== "true"); });
+    ["#courseSearch", "#axisFilter", "#modeFilter", "#typeFilter", "#facilitatorFilter"].forEach((s) => {
+      const el = $(s);
+      el.addEventListener(el.tagName === "SELECT" ? "change" : "input", () => { state.visibleCourses = 9; clearTimeout(el._t); el._t = setTimeout(renderCourses, el.tagName === "SELECT" ? 0 : 160); });
+    });
+    $("#catalogCount").addEventListener("click", (e) => { if (e.target.id === "clearFilters") { state.roomFilter = ""; ["#courseSearch", "#axisFilter", "#modeFilter", "#typeFilter", "#facilitatorFilter"].forEach((s) => { $(s).value = ""; }); renderCourses(); } });
+    $("#loadMore").addEventListener("click", () => { state.visibleCourses += 9; renderCourses(); });
+    $("#courseGrid").addEventListener("change", (e) => {
+      const cb = e.target.closest("input[data-session]");
+      if (!cb) return;
+      if (!toggleSession(cb.dataset.session, cb.checked)) cb.checked = !cb.checked;
+    });
+    $("#selectedList").addEventListener("click", (e) => { const b = e.target.closest("[data-remove-session]"); if (b) toggleSession(b.dataset.removeSession, false); });
+    $("#academicLevels").addEventListener("change", updatePrograms);
+    $("#postgraduateLevel").addEventListener("change", updatePrograms);
+    $("#programFilter").addEventListener("input", filterPrograms);
+    $("#registrationForm").addEventListener("input", (e) => e.target.removeAttribute?.("aria-invalid"));
+    $("#registrationForm").addEventListener("submit", submitRegistration);
+    $("#noticeConfirm").addEventListener("click", confirmRegistration);
+    $$("[data-close]").forEach((b) => b.addEventListener("click", () => b.closest("dialog").close()));
+    $$("dialog").forEach((d) => d.addEventListener("click", (e) => { if (e.target === d) d.close(); }));
+    $("#openCertificate").addEventListener("click", () => openCertDialog("registro"));
+    $("#openVerify").addEventListener("click", () => openVerify());
+    $("#footerVerify").addEventListener("click", () => openVerify());
+    $$("#certDialog [data-tab]").forEach((b) => b.addEventListener("click", () => selectCertTab(b.dataset.tab)));
+    $("#codigoForm").addEventListener("submit", validateAccessCode);
+    $("#certForm").addEventListener("submit", submitCertRegistration);
+    $("#certBack").addEventListener("click", () => { const c = $("#accessCode").value; resetCertDialog(); $("#accessCode").value = c; $("#accessCode").focus(); });
+    $("#certDone").addEventListener("click", (e) => { if (e.target.closest("[data-goto-download]")) { $("#dlCode").value = state.validCode?.codigo || ""; selectCertTab("descarga"); $("#dlKey").focus(); } });
+    $("#descargaForm").addEventListener("submit", submitCertLookup);
+    $("#verifyForm").addEventListener("submit", verifyFolio);
+    $("#mapOverlay").addEventListener("click", (e) => { const g = e.target.closest("[data-level]"); if (g) selectLevel(g.dataset.level); });
+    $("#mapOverlay").addEventListener("keydown", (e) => { const g = e.target.closest("[data-level]"); if (g && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); selectLevel(g.dataset.level); } });
+    $("#levelButtons").addEventListener("click", (e) => { const b = e.target.closest("[data-level]"); if (b) selectLevel(b.dataset.level); });
+    $("#levelPanel").addEventListener("click", (e) => {
+      const b = e.target.closest("[data-room]");
+      if (!b) return;
+      ["#axisFilter", "#modeFilter", "#typeFilter", "#facilitatorFilter"].forEach((s) => { $(s).value = ""; });
+      const room = b.dataset.room;
+      state.roomFilter = room;
+      $("#courseSearch").value = "";
+      state.visibleCourses = 9;
+      renderCourses();
+      $("#oferta").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" });
+    });
+    $("#toTop").addEventListener("click", () => window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" }));
+
+    setupTilt();
+    setupScrollEffects();
+
+    fetch("catalog.json", { cache: "no-cache" })
+      .then((r) => { if (!r.ok) throw new Error(`No se pudo cargar el catálogo (${r.status}).`); return r.json(); })
+      .then((catalog) => { state.catalog = catalog; initializePage(); setupCarouselMotion(); })
+      .catch((error) => {
+        console.error(error);
+        $("#courseGrid").innerHTML = `<div class="empty-note">No se pudo cargar el catálogo. Verifica que catalog.json esté publicado junto con index.html.</div>`;
+        $("#weekGrid").innerHTML = `<div class="empty-note">La agenda no está disponible en este momento.</div>`;
+      });
+  </script>
+</body>
+</html>

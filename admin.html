@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Panel de constancias | Jornada UVP</title>
+  <link rel="icon" href="assets/img/logo-uvp.png">
+  <style>
+    :root {
+      --ink: #1f1828; --muted: #6b6474; --paper: #f6f2f9; --line: #e8dfee; --plum: #4a176d; --purple: #7425a5; --magenta: #c41d65;
+      --orange: #f27b35; --gold: #f6c646; --ok: #147247; --danger: #a52046; --brand-grad: linear-gradient(110deg, #f6c646, #f27b35 38%, #c41d65 72%, #7425a5);
+      --shadow: 0 2px 4px rgba(42,15,64,.05), 0 14px 30px -12px rgba(42,15,64,.22); --edge: inset 0 1px 0 rgba(255,255,255,.85); --ease: cubic-bezier(.32,.72,0,1);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: radial-gradient(ellipse at 0 0, rgba(246,198,70,.14), transparent 40%), radial-gradient(ellipse at 100% 0, rgba(116,37,165,.12), transparent 40%), var(--paper); background-attachment: fixed; min-height: 100vh; }
+    button, input, select { font: inherit; }
+    [hidden] { display: none !important; }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+    header { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.8); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+    header::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--brand-grad); }
+    .bar { width: min(1240px, calc(100% - 32px)); margin: auto; min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .bar img { height: 32px; }
+    .bar strong { font-size: 15px; }
+    main { width: min(1240px, calc(100% - 32px)); margin: 26px auto 60px; }
+    h1 { margin: 0 0 6px; font-size: 28px; letter-spacing: -.03em; }
+    .muted { color: var(--muted); font-size: 13.5px; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 22px; padding: 22px; box-shadow: var(--shadow), var(--edge); }
+    .login { max-width: 420px; margin: 10vh auto; text-align: center; }
+    .login .card { text-align: left; }
+    label { display: grid; gap: 6px; font-size: 13px; font-weight: 700; color: #3f3649; }
+    input, select { min-height: 44px; border: 1.5px solid #e2d8e8; border-radius: 12px; padding: 8px 12px; background: #fbf9fc; color: var(--ink); font-size: 15px; }
+    input:focus, select:focus { outline: none; border-color: var(--purple); background: #fff; box-shadow: 0 0 0 4px rgba(116,37,165,.14); }
+    .btn { position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; border: 0; border-radius: 999px; padding: 8px 16px; font-weight: 700; font-size: 13.5px; cursor: pointer; transition: transform .2s var(--ease), box-shadow .2s; }
+    .btn:hover:not(:disabled) { transform: translateY(-1px); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-primary { background: linear-gradient(105deg, #f6c646, #f28a37); color: #281337; box-shadow: 0 10px 22px -10px rgba(242,123,53,.9), var(--edge); }
+    .btn-plum { background: linear-gradient(120deg, #5b1d7e, #4a176d); color: #fff; box-shadow: 0 10px 22px -10px rgba(74,23,109,.9); }
+    .btn-light { background: #fff; color: var(--plum); border: 1px solid #ddd2e4; }
+    .btn-ok { background: #e4f5ec; color: var(--ok); }
+    .btn-no { background: #fdeef2; color: var(--danger); }
+    .btn-sm { min-height: 32px; padding: 5px 11px; font-size: 12.5px; }
+    .tabs { display: inline-flex; gap: 4px; padding: 4px; margin: 18px 0; border-radius: 16px; background: #ece3f2; }
+    .tabs button { border: 0; border-radius: 12px; padding: 9px 16px; background: transparent; color: #5a4d63; font-weight: 700; cursor: pointer; }
+    .tabs button[aria-selected="true"] { background: #fff; color: var(--plum); box-shadow: 0 4px 12px -6px rgba(42,15,64,.35); }
+    .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 18px; }
+    .kpi { padding: 18px 20px; }
+    .kpi b { display: block; font-size: 32px; letter-spacing: -.04em; font-variant-numeric: tabular-nums; background: linear-gradient(110deg, var(--plum), var(--magenta)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .kpi span { color: var(--muted); font-size: 13px; }
+    .toolbar { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; margin-bottom: 14px; }
+    .toolbar label { min-width: 160px; }
+    .table-wrap { overflow: auto; border-radius: 16px; border: 1px solid var(--line); background: #fff; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #f1ebf4; vertical-align: top; }
+    th { position: sticky; top: 0; background: #faf6fd; color: #4a3e52; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; z-index: 1; }
+    tr:hover td { background: #fdfbfe; }
+    td input[type=datetime-local] { min-height: 34px; font-size: 12.5px; padding: 4px 8px; width: 190px; }
+    td input[type=number] { min-height: 34px; width: 70px; padding: 4px 8px; }
+    .code { font-family: ui-monospace, Consolas, monospace; font-weight: 800; letter-spacing: .08em; color: var(--plum); }
+    .tag { display: inline-block; border-radius: 999px; padding: 3px 9px; font-size: 11px; font-weight: 800; white-space: nowrap; }
+    .t-ok { background: #e4f5ec; color: var(--ok); } .t-pend { background: #fff3df; color: #8a4a10; } .t-val { background: #ece4ff; color: #4b2aa8; } .t-no { background: #fdeef2; color: var(--danger); } .t-rev { background: #fde2e2; color: #9b1c1c; }
+    .occ { width: 140px; height: 7px; border-radius: 7px; background: #efe8f3; overflow: hidden; }
+    .occ i { display: block; height: 100%; background: linear-gradient(90deg, #2a9d68, #f6c646 70%, #f27b35); }
+    .switch { position: relative; width: 44px; height: 26px; border-radius: 26px; border: 0; background: #d8cde0; cursor: pointer; transition: background .3s; }
+    .switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.2); transition: transform .3s var(--ease); }
+    .switch[aria-checked="true"] { background: #2a9d68; }
+    .switch[aria-checked="true"]::after { transform: translateX(18px); }
+    .hist { white-space: pre-line; color: var(--muted); font-size: 11.5px; max-width: 260px; }
+    .status { min-height: 22px; margin: 10px 0 0; font-size: 13.5px; }
+    .status.ok { color: var(--ok); } .status.err { color: var(--danger); } .status.wait { color: #68447d; }
+    .grid2 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    dialog { border: 0; border-radius: 24px; padding: 26px; box-shadow: 0 40px 100px -20px rgba(20,6,30,.6); max-width: min(520px, calc(100% - 28px)); }
+    dialog::backdrop { background: rgba(24,10,34,.55); backdrop-filter: blur(4px); }
+    .qr-sheet { text-align: center; }
+    .qr-sheet #qrBox { display: inline-block; padding: 16px; border-radius: 18px; background: #fff; box-shadow: var(--shadow); margin: 14px 0; }
+    .qr-sheet .big { font-family: ui-monospace, Consolas, monospace; font-size: 34px; font-weight: 800; letter-spacing: .2em; color: var(--plum); }
+    .progress { height: 8px; border-radius: 8px; background: #efe8f3; overflow: hidden; margin-top: 10px; }
+    .progress i { display: block; height: 100%; width: 0; background: var(--brand-grad); transition: width .2s; }
+    @media (max-width: 800px) { .kpis, .grid2 { grid-template-columns: 1fr 1fr; } }
+    @media print { header, .tabs, .no-print, main > :not(#qrDialog) { display: none !important; } dialog { box-shadow: none; position: static; } }
+  </style>
+</head>
+<body>
+  <header><div class="bar"><img src="assets/img/logo-uvp.png" alt="UVP"><strong>Panel de constancias · Jornada de Formación Docente</strong><button class="btn btn-light btn-sm" id="logout" hidden>Salir</button></div></header>
+  <main>
+    <section class="login" id="loginView">
+      <h1>Acceso de coordinación</h1>
+      <p class="muted">Escribe la clave configurada en la hoja (menú Jornada UVP → Configurar clave del panel).</p>
+      <form class="card" id="loginForm">
+        <label>Clave del panel<input id="adminKey" type="password" autocomplete="current-password" required></label>
+        <div style="margin-top:14px"><button class="btn btn-plum" type="submit" style="width:100%">Entrar al panel</button></div>
+        <p class="status" id="loginStatus"></p>
+      </form>
+    </section>
+
+    <section id="appView" hidden>
+      <h1>Panel administrativo</h1>
+      <p class="muted" id="windowNote"></p>
+      <div class="tabs" role="tablist">
+        <button role="tab" aria-selected="true" data-view="resumen">Resumen y cupos</button>
+        <button role="tab" aria-selected="false" data-view="codigos">Códigos</button>
+        <button role="tab" aria-selected="false" data-view="constancias">Constancias</button>
+      </div>
+
+      <div data-panel="resumen">
+        <div class="kpis">
+          <div class="card kpi"><b id="kInscritos">—</b><span>Docentes inscritos</span></div>
+          <div class="card kpi"><b id="kLugares">—</b><span>Lugares disponibles</span></div>
+          <div class="card kpi"><b id="kRegistros">—</b><span>Registros de constancia</span></div>
+          <div class="card kpi"><b id="kAutorizadas">—</b><span>Constancias autorizadas</span></div>
+        </div>
+        <div class="toolbar"><button class="btn btn-light btn-sm" id="exportCupos">Descargar cupos (CSV)</button><button class="btn btn-light btn-sm" id="refresh">Actualizar</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Sesión</th><th>Fecha</th><th>Modalidad · aula</th><th>Inscritos</th><th>Ocupación</th><th>Disponibles</th></tr></thead><tbody id="cuposBody"></tbody></table></div>
+      </div>
+
+      <div data-panel="codigos" hidden>
+        <div class="toolbar">
+          <label>Buscar<input id="codeSearch" placeholder="Código o curso"></label>
+          <button class="btn btn-light btn-sm" id="exportCodes">Descargar códigos (CSV)</button>
+        </div>
+        <div class="table-wrap"><table><thead><tr><th>Código</th><th>Curso o taller</th><th>Fecha</th><th>Horas · plantilla</th><th>Activo</th><th>Inicio</th><th>Cierre</th><th>Registros</th><th></th></tr></thead><tbody id="codesBody"></tbody></table></div>
+        <p class="status" id="codesStatus"></p>
+        <details class="card" style="margin-top:18px"><summary style="font-weight:800;cursor:pointer">Crear un código manual (curso extra o reposición)</summary>
+          <form id="newCodeForm" style="margin-top:14px">
+            <div class="grid2">
+              <label style="grid-column:1/-1">Nombre del curso o taller<input id="ncCurso" required maxlength="200"></label>
+              <label>Fecha<input id="ncFecha" type="date"></label>
+              <label>Horario<input id="ncHorario" placeholder="09:00-12:00"></label>
+              <label>Horas (define la plantilla)<input id="ncHoras" type="number" min="1" max="12" required></label>
+            </div>
+            <div style="margin-top:12px"><button class="btn btn-plum" type="submit">Crear código</button></div>
+          </form>
+        </details>
+      </div>
+
+      <div data-panel="constancias" hidden>
+        <div class="toolbar">
+          <label>Curso (código)<select id="certCode"><option value="">Todos</option></select></label>
+          <label>Estatus<select id="certStatusFilter"><option value="">Todos</option><option>Pendiente de validación</option><option>Asistencia y evaluación validadas</option><option>Autorizada</option><option>No autorizada</option></select></label>
+          <label>Buscar<input id="certSearch" placeholder="Nombre, clave o folio"></label>
+          <button class="btn btn-light btn-sm" id="loadCerts">Consultar</button>
+        </div>
+        <div class="toolbar">
+          <button class="btn btn-ok btn-sm" data-bulk="Autorizada">Autorizar selección</button>
+          <button class="btn btn-light btn-sm" data-bulk="Asistencia y evaluación validadas">Marcar validadas</button>
+          <button class="btn btn-no btn-sm" data-bulk="No autorizada">No autorizar</button>
+          <label style="min-width:auto;flex-direction:row;display:flex;align-items:center;gap:8px"><input type="checkbox" id="notify" checked style="min-height:auto">Enviar aviso por correo al autorizar</label>
+          <span style="flex:1"></span>
+          <button class="btn btn-light btn-sm" id="exportCerts">Descargar registros (CSV)</button>
+          <button class="btn btn-primary btn-sm" id="zipBtn">Descargar ZIP del curso</button>
+        </div>
+        <div class="progress" id="zipProgress" hidden><i></i></div>
+        <div class="table-wrap"><table><thead><tr><th><input type="checkbox" id="selAll" aria-label="Seleccionar todo" style="min-height:auto"></th><th>Folio</th><th>Nombre</th><th>Clave · correo</th><th>Curso</th><th>Estatus</th><th>Emisión · descargas</th><th>Historial</th><th></th></tr></thead><tbody id="certBody"></tbody></table></div>
+        <p class="status" id="certsStatus"></p>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="qrDialog"><div class="qr-sheet">
+    <p class="muted" style="margin:0">Jornada de Formación y Superación Docente · UVP</p>
+    <h2 id="qrCurso" style="margin:8px 0 0;font-size:20px"></h2>
+    <div id="qrBox"></div>
+    <div class="big" id="qrCode"></div>
+    <p class="muted">Escanea para registrar tu participación y obtener tu constancia.<br>Recuerda responder la evaluación final.</p>
+    <p class="muted" id="qrUrl" style="word-break:break-all;font-size:11px"></p>
+    <div class="no-print" style="display:flex;gap:10px;justify-content:center;margin-top:12px"><button class="btn btn-plum" onclick="window.print()">Imprimir</button><button class="btn btn-light" onclick="this.closest('dialog').close()">Cerrar</button></div>
+  </div></dialog>
+
+  <iframe name="admin-response" title="Respuesta" hidden></iframe>
+  <form id="apiForm" target="admin-response" method="post" hidden></form>
+
+  <script>
+    "use strict";
+    // Debe ser la misma URL que en index.html.
+    const API_URL = "https://script.google.com/macros/s/AKfycbyMCPo_hYISLM5Zq-03THmD6D9MJt-DevTKrKXyD9DiMjs4wCat0yKILVdEtZ-HmWFy/exec";
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => [...document.querySelectorAll(s)];
+    const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const pending = new Map();
+    const st = { key: "", data: null, certs: [] };
+    const siteBase = location.origin + location.pathname.replace(/admin\.html$/, "");
+
+    function call(op, extra = {}) {
+      return new Promise((resolve, reject) => {
+        const requestId = crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random());
+        const timer = setTimeout(() => { pending.delete(requestId); reject(new Error("Sin respuesta del servidor. Revisa la implementación de Apps Script.")); }, 45000);
+        pending.set(requestId, { resolve, reject, timer });
+        const input = Object.assign(document.createElement("input"), { type: "hidden", name: "payload", value: JSON.stringify({ kind: "admin", op, key: st.key, requestId, origin: location.origin, ...extra }) });
+        const f = $("#apiForm"); f.replaceChildren(input); f.action = API_URL; f.submit();
+      });
+    }
+    window.addEventListener("message", (e) => {
+      const host = (() => { try { return new URL(e.origin).hostname; } catch { return ""; } })();
+      if (!(host === "script.google.com" || host.endsWith(".googleusercontent.com"))) return;
+      const r = e.data;
+      if (!r || r.type !== "uvp-admin-result" || !pending.has(r.requestId)) return;
+      const p = pending.get(r.requestId); pending.delete(r.requestId); clearTimeout(p.timer);
+      r.ok ? p.resolve(r) : p.reject(new Error(r.message || "Error"));
+    });
+    const status = (el, msg, kind = "") => { el.textContent = msg; el.className = `status ${kind}`; };
+    const fmtDate = (iso) => /^\d{4}-\d{2}-\d{2}/.test(iso || "") ? new Date(`${iso.slice(0, 10)}T12:00:00`).toLocaleDateString("es-MX", { day: "numeric", month: "short", year: "numeric" }) : (iso || "Autogestivo");
+    const toLocalInput = (iso) => { if (!iso) return ""; const d = new Date(iso); const p = (n) => String(n).padStart(2, "0"); return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; };
+    const tagFor = (s) => ({ "Autorizada": "t-ok", "Pendiente de validación": "t-pend", "Asistencia y evaluación validadas": "t-val", "No autorizada": "t-no" }[s] || "t-pend");
+
+    function csv(name, rows) {
+      const text = "﻿" + rows.map((r) => r.map((c) => `"${String(c ?? "").replace(/"/g, '""')}"`).join(",")).join("\r\n");
+      const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(new Blob([text], { type: "text/csv;charset=utf-8" })), download: name });
+      a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+    }
+
+    /* ---------- Acceso ---------- */
+    $("#loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      st.key = $("#adminKey").value;
+      status($("#loginStatus"), "Verificando…", "wait");
+      try { await loadSummary(); sessionStorage.setItem("uvpAdmin", st.key); enterApp(); }
+      catch (err) { status($("#loginStatus"), err.message, "err"); }
+    });
+    function enterApp() { $("#loginView").hidden = true; $("#appView").hidden = false; $("#logout").hidden = false; }
+    $("#logout").addEventListener("click", () => { sessionStorage.removeItem("uvpAdmin"); location.reload(); });
+    $$(".tabs button").forEach((b) => b.addEventListener("click", () => {
+      $$(".tabs button").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
+      $$("[data-panel]").forEach((p) => { p.hidden = p.dataset.panel !== b.dataset.view; });
+      if (b.dataset.view === "constancias" && !st.certs.length) loadCerts();
+    }));
+
+    /* ---------- Resumen ---------- */
+    async function loadSummary() {
+      const r = await call("resumen");
+      st.data = r;
+      $("#kInscritos").textContent = r.stats.totalInscritos.toLocaleString("es-MX");
+      $("#kLugares").textContent = r.stats.cuposDisponibles.toLocaleString("es-MX");
+      $("#kRegistros").textContent = r.totales.registros.toLocaleString("es-MX");
+      $("#kAutorizadas").textContent = r.totales.autorizadas.toLocaleString("es-MX");
+      $("#windowNote").textContent = r.ventana.abierto ? `Periodo de constancias abierto${r.ventana.cierre ? ` hasta ${new Date(r.ventana.cierre).toLocaleString("es-MX")}` : " (sin fecha de cierre)"}.` : "El periodo general de constancias está cerrado (CERT_OPEN / CERT_CLOSE en Code.gs).";
+      $("#cuposBody").innerHTML = r.sesiones.sort((a, b) => (a.date || "9").localeCompare(b.date || "9") || a.block - b.block).map((s) => {
+        const pct = Math.round((s.inscritos / s.capacity) * 100);
+        return `<tr><td><strong>${esc(s.title)}</strong></td><td>${esc(fmtDate(s.date))}<br><span class="muted">${esc(s.time)}</span></td><td>${esc(s.modality)}<br><span class="muted">${esc(s.room)}</span></td><td>${s.inscritos} / ${s.capacity}</td><td><div class="occ"><i style="width:${pct}%"></i></div><span class="muted">${pct}%</span></td><td><span class="tag ${s.disponibles ? "t-ok" : "t-no"}">${s.disponibles ? s.disponibles : "Completo"}</span></td></tr>`;
+      }).join("");
+      renderCodes();
+      const sel = $("#certCode"), cur = sel.value;
+      sel.innerHTML = `<option value="">Todos</option>` + r.codigos.map((c) => `<option value="${esc(c.codigo)}">${esc(c.codigo)} · ${esc(c.curso.slice(0, 60))} · ${esc(fmtDate(c.fecha))}</option>`).join("");
+      sel.value = cur;
+      return r;
+    }
+    $("#refresh").addEventListener("click", () => loadSummary().catch((e) => alert(e.message)));
+    $("#exportCupos").addEventListener("click", () => csv("cupos_jornada.csv", [["Sesión", "Fecha", "Horario", "Modalidad", "Aula", "Inscritos", "Cupo", "Disponibles"], ...st.data.sesiones.map((s) => [s.title, s.date, s.time, s.modality, s.room, s.inscritos, s.capacity, s.disponibles])]));
+
+    /* ---------- Códigos ---------- */
+    function renderCodes() {
+      const q = $("#codeSearch").value.trim().toLowerCase();
+      const rows = st.data.codigos.filter((c) => !q || `${c.codigo} ${c.curso}`.toLowerCase().includes(q));
+      $("#codesBody").innerHTML = rows.map((c) => `<tr data-code="${esc(c.codigo)}">
+        <td class="code">${esc(c.codigo)}</td>
+        <td>${esc(c.curso)}</td>
+        <td>${esc(fmtDate(c.fecha))}<br><span class="muted">${esc(c.horario)}</span></td>
+        <td><input type="number" min="1" max="12" value="${esc(c.horas || "")}" data-f="horas" aria-label="Horas"> <span class="tag ${c.clasificacion === "REVISIÓN" ? "t-rev" : "t-val"}">${esc(c.clasificacion)}</span></td>
+        <td><button class="switch" role="switch" aria-checked="${c.activo}" data-f="activo" aria-label="Activo"></button></td>
+        <td><input type="datetime-local" value="${toLocalInput(c.inicio)}" data-f="inicio" aria-label="Inicio"></td>
+        <td><input type="datetime-local" value="${toLocalInput(c.cierre)}" data-f="cierre" aria-label="Cierre"></td>
+        <td>${c.conteo.registros} <span class="muted">· ${c.conteo.autorizadas} aut.</span></td>
+        <td style="white-space:nowrap"><button class="btn btn-plum btn-sm" data-act="save">Guardar</button> <button class="btn btn-light btn-sm" data-act="qr">QR</button> <button class="btn btn-light btn-sm" data-act="regen" title="Genera un código nuevo">Regenerar</button></td>
+      </tr>`).join("");
+    }
+    $("#codeSearch").addEventListener("input", renderCodes);
+    $("#codesBody").addEventListener("click", async (e) => {
+      const sw = e.target.closest(".switch");
+      if (sw) { sw.setAttribute("aria-checked", String(sw.getAttribute("aria-checked") !== "true")); return; }
+      const b = e.target.closest("[data-act]");
+      if (!b) return;
+      const tr = b.closest("tr"), code = tr.dataset.code, c = st.data.codigos.find((x) => x.codigo === code);
+      if (b.dataset.act === "qr") return showQR(c);
+      try {
+        status($("#codesStatus"), "Guardando…", "wait");
+        let r;
+        if (b.dataset.act === "regen") {
+          if (!confirm(`¿Reemplazar el código ${code}? El anterior dejará de funcionar para registros nuevos.`)) return status($("#codesStatus"), "");
+          r = await call("codigo", { accion: "regenerar", codigo: code });
+        } else {
+          const v = (f) => tr.querySelector(`[data-f="${f}"]`);
+          const inicio = v("inicio").value, cierre = v("cierre").value;
+          r = await call("codigo", { accion: "guardar", codigo: code, activo: v("activo").getAttribute("aria-checked") === "true", horas: Number(v("horas").value) || 0,
+            inicio: inicio ? new Date(inicio).toISOString() : "", cierre: cierre ? new Date(cierre).toISOString() : "" });
+        }
+        status($("#codesStatus"), r.message, "ok");
+        await loadSummary();
+      } catch (err) { status($("#codesStatus"), err.message, "err"); }
+    });
+    $("#newCodeForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        const r = await call("codigo", { accion: "nuevo", curso: $("#ncCurso").value.trim(), fecha: $("#ncFecha").value || "Autogestivo", horario: $("#ncHorario").value.trim(), horas: Number($("#ncHoras").value) });
+        status($("#codesStatus"), r.message, "ok"); e.target.reset(); await loadSummary();
+      } catch (err) { status($("#codesStatus"), err.message, "err"); }
+    });
+    $("#exportCodes").addEventListener("click", () => csv("codigos_constancia.csv", [["Código", "Curso", "Fecha", "Horario", "Horas", "Clasificación", "Activo", "Enlace QR", "Registros", "Autorizadas"], ...st.data.codigos.map((c) => [c.codigo, c.curso, c.fecha, c.horario, c.horas, c.clasificacion, c.activo ? "SI" : "NO", `${siteBase}?constancia=${c.codigo}`, c.conteo.registros, c.conteo.autorizadas])]));
+
+    function loadLib(src) {
+      return new Promise((ok, no) => { if (document.querySelector(`script[src="${src}"]`)) return ok(); const s = Object.assign(document.createElement("script"), { src, onload: ok, onerror: () => no(new Error(`No se pudo cargar ${src}`)) }); document.head.appendChild(s); });
+    }
+    async function showQR(c) {
+      await loadLib("https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js");
+      const url = `${siteBase}?constancia=${c.codigo}`;
+      $("#qrCurso").textContent = c.curso;
+      $("#qrCode").textContent = c.codigo;
+      $("#qrUrl").textContent = url;
+      $("#qrBox").innerHTML = "";
+      new QRCode($("#qrBox"), { text: url, width: 260, height: 260, colorDark: "#241237", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.M });
+      $("#qrDialog").showModal();
+    }
+
+    /* ---------- Constancias ---------- */
+    async function loadCerts() {
+      status($("#certsStatus"), "Consultando registros…", "wait");
+      try { const r = await call("registros", { codigo: $("#certCode").value }); st.certs = r.registros; renderCerts(); status($("#certsStatus"), `${r.registros.length} registros.`, "ok"); }
+      catch (err) { status($("#certsStatus"), err.message, "err"); }
+    }
+    function renderCerts() {
+      const q = $("#certSearch").value.trim().toLowerCase(), sf = $("#certStatusFilter").value;
+      const rows = st.certs.filter((r) => (!sf || r.estatus === sf) && (!q || `${r.nombre} ${r.clave} ${r.folio} ${r.correo}`.toLowerCase().includes(q)));
+      $("#certBody").innerHTML = rows.map((r) => `<tr data-folio="${esc(r.folio)}">
+        <td><input type="checkbox" class="sel" style="min-height:auto" aria-label="Seleccionar ${esc(r.nombre)}"></td>
+        <td class="code" style="font-size:11.5px">${esc(r.folio)}</td>
+        <td><strong>${esc(r.nombre)}</strong></td>
+        <td>${esc(r.clave)}<br><span class="muted">${esc(r.correo)}</span></td>
+        <td>${esc(r.curso)}<br><span class="muted">${esc(r.codigo)} · ${esc(fmtDate(r.fechaCurso))} · ${esc(r.horas)} h · ${esc(r.tipo)}</span></td>
+        <td><span class="tag ${tagFor(r.estatus)}">${esc(r.estatus)}</span>${r.aviso ? `<br><span class="muted">Aviso ${esc(r.aviso)}</span>` : ""}</td>
+        <td>${esc(r.emision || "—")}<br><span class="muted">${r.descargas} descarga(s)</span></td>
+        <td class="hist">${esc(r.historial)}</td>
+        <td><button class="btn btn-light btn-sm" data-fix>Corregir nombre</button></td></tr>`).join("") || `<tr><td colspan="9" class="muted">Sin registros con esos filtros.</td></tr>`;
+      $("#selAll").checked = false;
+    }
+    $("#loadCerts").addEventListener("click", loadCerts);
+    $("#certCode").addEventListener("change", loadCerts);
+    $("#certStatusFilter").addEventListener("change", renderCerts);
+    $("#certSearch").addEventListener("input", renderCerts);
+    $("#selAll").addEventListener("change", (e) => $$("#certBody .sel").forEach((c) => { c.checked = e.target.checked; }));
+    $$("[data-bulk]").forEach((b) => b.addEventListener("click", async () => {
+      const folios = $$("#certBody .sel:checked").map((c) => c.closest("tr").dataset.folio);
+      if (!folios.length) return status($("#certsStatus"), "Selecciona al menos un registro.", "err");
+      const nota = b.dataset.bulk === "No autorizada" ? prompt("Motivo (opcional, queda en el historial):") || "" : "";
+      status($("#certsStatus"), "Actualizando…", "wait");
+      try { const r = await call("estatus", { folios, estatus: b.dataset.bulk, notificar: $("#notify").checked, nota }); status($("#certsStatus"), r.message, "ok"); await loadCerts(); }
+      catch (err) { status($("#certsStatus"), err.message, "err"); }
+    }));
+    $("#certBody").addEventListener("click", async (e) => {
+      if (!e.target.closest("[data-fix]")) return;
+      const tr = e.target.closest("tr"), r = st.certs.find((x) => x.folio === tr.dataset.folio);
+      const nombre = prompt("Nombre correcto tal como debe imprimirse:", r.nombre);
+      if (!nombre || nombre.trim() === r.nombre) return;
+      try { const res = await call("corregir", { folio: r.folio, nombre: nombre.trim() }); status($("#certsStatus"), res.message, "ok"); await loadCerts(); }
+      catch (err) { status($("#certsStatus"), err.message, "err"); }
+    });
+    $("#exportCerts").addEventListener("click", () => csv(`constancias_${$("#certCode").value || "todas"}.csv`, [["Folio", "Registro", "Nombre", "Correo", "Clave", "Código", "Curso", "Fecha", "Horario", "Horas", "Clasificación", "Estatus", "Emisión", "Descargas", "Aviso", "Historial"], ...st.certs.map((r) => [r.folio, r.registro, r.nombre, r.correo, r.clave, r.codigo, r.curso, r.fechaCurso, r.horario, r.horas, r.tipo, r.estatus, r.emision, r.descargas, r.aviso, r.historial])]));
+
+    /* Descarga masiva: todas las constancias autorizadas de un curso en un ZIP. */
+    $("#zipBtn").addEventListener("click", async () => {
+      const code = $("#certCode").value;
+      if (!code) return status($("#certsStatus"), "Elige primero un curso (código) en el filtro.", "err");
+      const bar = $("#zipProgress"), fill = bar.querySelector("i");
+      try {
+        status($("#certsStatus"), "Preparando constancias…", "wait");
+        const [{ constancias }] = await Promise.all([call("lote", { codigo: code }),
+          loadLib("https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"), loadLib("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js")]);
+        await loadLib("constancias/generador.js");
+        if (!constancias.length) return status($("#certsStatus"), "Ese curso no tiene constancias autorizadas.", "err");
+        const tpl = {};
+        const zip = new JSZip();
+        bar.hidden = false;
+        for (let i = 0; i < constancias.length; i++) {
+          const d = constancias[i], file = d.tipo === "TALLER" ? "constancias/plantilla-taller.pdf" : "constancias/plantilla-curso.pdf";
+          tpl[file] = tpl[file] || await fetch(file).then((x) => x.arrayBuffer());
+          const pdf = await window.GeneradorConstancia.generarConstancia({ ...d, verificarUrl: `${siteBase.replace(/^https?:\/\//, "")}?verificar=${d.folio}` }, tpl[file].slice(0));
+          const slug = d.nombre.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-zA-Z0-9]+/g, "_").replace(/^_|_$/g, "");
+          zip.file(`${slug}_${d.folio}.pdf`, pdf);
+          fill.style.width = `${Math.round(((i + 1) / constancias.length) * 100)}%`;
+        }
+        const blob = await zip.generateAsync({ type: "blob" });
+        const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: `Constancias_${code}.zip` });
+        a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+        status($("#certsStatus"), `ZIP generado con ${constancias.length} constancias.`, "ok");
+      } catch (err) { status($("#certsStatus"), err.message, "err"); }
+      finally { setTimeout(() => { bar.hidden = true; fill.style.width = "0"; }, 1200); }
+    });
+
+    const saved = sessionStorage.getItem("uvpAdmin");
+    if (saved) { st.key = saved; loadSummary().then(enterApp).catch(() => sessionStorage.removeItem("uvpAdmin")); }
+  </script>
+</body>
+</html>
